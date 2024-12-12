@@ -1,0 +1,33 @@
+{
+"type": "FeatureCollection",
+"name": "location_nodes",
+"features": [
+{ "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp1" }, "geometry": { "type": "Point", "coordinates": [ 0.0, 0.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp2" }, "geometry": { "type": "Point", "coordinates": [ 0.0, 2.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp3" }, "geometry": { "type": "Point", "coordinates": [ 0.0, 4.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp4" }, "geometry": { "type": "Point", "coordinates": [ 0.0, 6.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp5" }, "geometry": { "type": "Point", "coordinates": [ 2.0, 0.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp6" }, "geometry": { "type": "Point", "coordinates": [ 2.0, 2.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp7" }, "geometry": { "type": "Point", "coordinates": [ 2.0, 4.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp8" }, "geometry": { "type": "Point", "coordinates": [ 2.0, 6.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp9" }, "geometry": { "type": "Point", "coordinates": [ 4.0, 0.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp10" }, "geometry": { "type": "Point", "coordinates": [ 4.0, 2.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp11" }, "geometry": { "type": "Point", "coordinates": [ 4.0, 4.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp12" }, "geometry": { "type": "Point", "coordinates": [ 4.0, 6.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp13" }, "geometry": { "type": "Point", "coordinates": [ 6.0, 0.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp14" }, "geometry": { "type": "Point", "coordinates": [ 6.0, 2.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp15" }, "geometry": { "type": "Point", "coordinates": [ 6.0, 4.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp16" }, "geometry": { "type": "Point", "coordinates": [ 6.0, 6.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "HP", "id": "hp1" }, "geometry": { "type": "Point", "coordinates": [ 3.0, 1.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "HP", "id": "hp2" }, "geometry": { "type": "Point", "coordinates": [ 5.0, 2.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "HP", "id": "hp3" }, "geometry": { "type": "Point", "coordinates": [ 2.0, 3.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "HP", "id": "hp4" }, "geometry": { "type": "Point", "coordinates": [ 5.0, 4.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "HP", "id": "hp5" }, "geometry": { "type": "Point", "coordinates": [ 1.0, 5.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "HP", "id": "hp6" }, "geometry": { "type": "Point", "coordinates": [ 3.0, 5.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "HC", "id": "hc1" }, "geometry": { "type": "Point", "coordinates": [ 1.0, 1.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "HC", "id": "hc2" }, "geometry": { "type": "Point", "coordinates": [ 5.0, 2.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "HC", "id": "hc3" }, "geometry": { "type": "Point", "coordinates": [ 2.0, 3.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "HC", "id": "hc4" }, "geometry": { "type": "Point", "coordinates": [ 1.0, 4.0 ] } },
+{ "type": "Feature", "properties": { "type_f": "HC", "id": "hc5" }, "geometry": { "type": "Point", "coordinates": [ 5.0, 5.0 ] } }
+]
+}
