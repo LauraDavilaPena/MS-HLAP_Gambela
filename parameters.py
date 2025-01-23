@@ -136,7 +136,7 @@ dd_ch = {(key): int(np.ceil(dd[key] * dr_ch[key])) for key in dd}
 
 
 # Distance matrix
-distance_matrix = pd.read_excel('distance_matrix_ij.xlsx', index_col=0)
+distance_matrix = pd.read_excel('distance_matrix_ij2.xlsx', index_col=0)
 """
 E.g., to access elements:
 distance_matrix_df.loc['dp3','hc1']
