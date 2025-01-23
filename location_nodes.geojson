@@ -2,7 +2,7 @@
 "type": "FeatureCollection",
 "name": "location_nodes",
 "features": [
-{ "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp1" }, "geometry": { "type": "Point", "coordinates": [ -2.0, -2.0] } },
+{ "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp1" }, "geometry": { "type": "Point", "coordinates": [ 0.0, 0.0] } },
 { "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp2" }, "geometry": { "type": "Point", "coordinates": [ 0.0, 2.0 ] } },
 { "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp3" }, "geometry": { "type": "Point", "coordinates": [ 0.0, 4.0 ] } },
 { "type": "Feature", "properties": { "type_f": "demand_point", "id": "dp4" }, "geometry": { "type": "Point", "coordinates": [ 0.0, 6.0 ] } },
