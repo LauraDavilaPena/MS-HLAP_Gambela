@@ -13,7 +13,7 @@ This repository contains a mixed-integer optimization (MIO) model for solving a 
 This model has been implemented using Python **3.12.7** and has been tested on **Windows 11** laptops. To run the code, you'll need to have the following installed:
 
 - Python 3.12.7 (or later)
-- Relevant Python packages (e.g., `numpy`, `pandas`, `matplotlib`, `scipy`, `PuLP`, etc.)
+- Relevant Python packages (e.g., `numpy`, `pandas`, `matplotlib`, `itertools`, `scipy`, `pyomo`, etc.)
 
 ### Installing dependencies
 You can install all required dependencies through the provided Conda environment, or you can install packages manually using pip for individual needs.
@@ -22,7 +22,7 @@ You can install all required dependencies through the provided Conda environment
 - If you prefer **pip**, you can install the necessary packages using:
 
 ```bash
-pip install numpy pandas matplotlib scipy pulp
+pip install numpy pandas matplotlib itertools scipy pyomo
 
 ## Setting Up the Environment: 
 
