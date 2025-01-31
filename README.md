@@ -23,6 +23,7 @@ You can install all required dependencies through the provided Conda environment
 
 ```bash
 pip install numpy pandas matplotlib itertools scipy pyomo```
+```
 
 ## Setting Up the Environment: 
 
