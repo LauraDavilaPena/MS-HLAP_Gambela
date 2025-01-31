@@ -22,7 +22,7 @@ You can install all required dependencies through the provided Conda environment
 - If you prefer **pip**, you can install the necessary packages using:
 
 ```bash
-pip install numpy pandas matplotlib itertools scipy pyomo```
+pip install numpy pandas matplotlib itertools scipy pyomo
 ```
 
 ## Setting Up the Environment: 
@@ -32,20 +32,30 @@ To set up the environment and install all required dependencies, you can use the
 ### Steps (use the Anaconda Prompt terminal):
 
 1. **Clone the repository**:
+   ```
    git clone https://github.com/LauraDavilaPena/MS-HLAM_Gambela.git
    cd MS-HLAM_Gambela
+   ```
 
-2. **Create the Conda environment from the `environment.yml` file**:
+3. **Create the Conda environment from the `environment.yml` file**:
+   ```bash
    conda env create -f environment.yml
-
-3. **Activate the environment**:
+   ```
+   
+5. **Activate the environment**:
+   ```bash
    conda activate Gambella_refcamps
+   ```
 
-4. **Run the model**:
+7. **Run the model**:
 - If you're using **Jupyter Notebooks**, start Jupyter with:
+  ```bash
   jupyter notebook
+  ```
 
 - If you prefer running the code as a **Python script**, you can execute it directly from the terminal once the environment is activated:
+  ```bash
   python mio_ms-hlap.py
+  ```
 
 
