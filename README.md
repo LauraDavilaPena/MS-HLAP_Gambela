@@ -1,6 +1,6 @@
 # Mixed-integer optimization for the MS-HLAP
 
-This repository contains a mixed-integer optimization (MIO) model for solving a multi-service hierarchical location-allocation problem (MS-HLAP). The MS-HLAP is designed to improve access to health facilities within refugee camps in the Gambela region, Ethiopia, by considering both the hierarchical structure of the system and the variety of healthcare services provided.
+This repository contains a mixed-integer optimization (MIO) model for solving a multi-service hierarchical location-allocation problem (MS-HLAP). The MS-HLAP is designed to improve access to health facilities within refugee camps in the Gambella region, Ethiopia, by considering both the hierarchical structure of the system and the variety of healthcare services provided.
 
 ## Key Features:
 
