@@ -3,9 +3,12 @@ import geopandas as gdp
 import numpy as np
 import pandas as pd
 import itertools
+import sys, trace
+import matplotlib.pyplot as plt
 
 # Load the GeoJSON file
 location_nodes = gdp.read_file("location_nodes.geojson")
+
 
 # Add x and y coordinates as new columns
 location_nodes.loc[:, 'x'] = location_nodes.geometry.x
@@ -18,7 +21,23 @@ location_nodes = location_nodes.sort_values(by=['y', 'x']).reset_index(drop=True
 demand_points_gdf = location_nodes.loc[location_nodes.type_f == "demand_point"].copy()
 demand_points_gdf['label'] = ['i' + str(i + 1) for i in range(len(demand_points_gdf))]
 
-# Save demand points to a Numpy Array
+
+# # Plot demand points and location nodes
+# plt.figure(figsize=(10, 10))
+# plt.scatter(location_nodes['x'], location_nodes['y'], c='blue', label='Location Nodes')
+# plt.scatter(demand_points_gdf['x'], demand_points_gdf['y'], c='red', label='Demand Points')
+
+# # Annotate demand points with labels
+# for idx, row in demand_points_gdf.iterrows():
+#     plt.annotate(row['label'], (row['x'], row['y']), textcoords="offset points", xytext=(0,10), ha='center')
+
+# plt.xlabel('Longitude')
+# plt.ylabel('Latitude')
+# plt.legend()
+# plt.title('Demand Points and Location Nodes')
+# plt.show()
+
+# Save demand point labels to a Numpy Array
 dps = demand_points_gdf['label'].to_numpy()
 
 # Take subsets for HPs, HCs and HFs (comprising both HPs and HCs)
@@ -32,10 +51,10 @@ hfs_gdf = hfs_gdf.drop_duplicates(subset='geometry').reset_index(drop=False)
 # Label candidate locations
 hfs_gdf['label'] = ['j' + str(j + 1) for j in range(len(hfs_gdf))]
 
-# Save candidate locations for HFs to a Numpy Array
+# Save candidate location names for HFs to a Numpy Array
 hfs = hfs_gdf['label'].to_numpy()
 
-# Save candidate locations for HPs and HCs to a Numpy Array
+# Save candidate location names for HPs and HCs to a Numpy Array
 hps = hfs_gdf[hfs_gdf['geometry'].isin(hps_gdf['geometry'])]['label'].to_numpy()
 hcs = hfs_gdf[hfs_gdf['geometry'].isin(hcs_gdf['geometry'])]['label'].to_numpy()
 
@@ -63,9 +82,9 @@ demand_month = np.array([
 demand_month_df = pd.DataFrame(demand_month, index=services)
 demand_month_df = demand_month_df.T
 
+#create a dictionary for monthly demands
 dm = {(dps[i], services[s]): demand_month_df.iloc[i, s] 
       for i, s in itertools.product(range(len(dps)), range(len(services)))}
-dm
 
 # Daily demands per service 
 """
@@ -84,10 +103,9 @@ demand_day = np.array([
 
 demand_day_df = pd.DataFrame(demand_day, index=services)
 demand_day_df = demand_day_df.T
-
+#create a dictionary for daily demands (location, service): demand
 dd = {(dps[i], services[s]): demand_day_df.iloc[i, s] 
       for i, s in itertools.product(range(len(dps)), range(len(services)))}
-dd
 
 # Demand rate per types of services during opening hours
 demand_rate_opening_hours = np.array([
@@ -101,7 +119,6 @@ demand_rate_opening_hours_df = demand_rate_opening_hours_df.T
 
 dr_oh = {(dps[i], services[s]): demand_rate_opening_hours_df.iloc[i, s] 
       for i, s in itertools.product(range(len(dps)), range(len(services)))}
-dr_oh
 
 # Daily demands per service during opening hours:
 """
@@ -122,7 +139,6 @@ demand_rate_closing_hours_df = demand_rate_closing_hours_df.T
 dr_ch = {(dps[i], services[s]): demand_rate_closing_hours_df.iloc[i, s]
               for i, s in itertools.product(range(len(dps)), range(len(services)))}
 
-dr_ch
 
 # Daily demands per service outside opening hours:
 """
@@ -136,14 +152,14 @@ dd_ch = {(key): int(np.ceil(dd[key] * dr_ch[key])) for key in dd}
 
 
 # Distance matrix
-distance_matrix = pd.read_excel('distance_matrix_ij2.xlsx', index_col=0)
+distance_matrix = pd.read_excel('distance_matrix_ij.xlsx', index_col=0)
 """
 E.g., to access elements:
 distance_matrix_df.loc['dp3','hc1']
 """
 
 # Number of health workers of each type to allocate
-workers_to_allocate = [2, 7, 7]
+workers_to_allocate = [5, 7, 7]
 
 # Lower bounds on the number of workers per HF-type
 lb_workers = np.array([
@@ -185,7 +201,7 @@ a_W = {(health_workers[p],services[s]): services_per_worker_df.iloc[p, s]
 
 
 # Maximum coverage distance for first assignment
-t1max = 3.5
+t1max = 10
 
 # Service time
 service_time = [0.5, 1, 2]
