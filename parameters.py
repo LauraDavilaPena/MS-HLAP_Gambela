@@ -159,7 +159,7 @@ distance_matrix_df.loc['dp3','hc1']
 """
 
 # Number of health workers of each type to allocate
-workers_to_allocate = [5, 7, 7]
+workers_to_allocate = [2, 7, 7]
 
 # Lower bounds on the number of workers per HF-type
 lb_workers = np.array([
@@ -201,7 +201,7 @@ a_W = {(health_workers[p],services[s]): services_per_worker_df.iloc[p, s]
 
 
 # Maximum coverage distance for first assignment
-t1max = 10
+t1max = 3.5
 
 # Service time
 service_time = [0.5, 1, 2]
@@ -233,3 +233,40 @@ def get_nearby_HFs(distance_matrix, dps, t1max):
         J_i[dp] = nearby_HFs
     
     return J_i
+
+
+
+########### Included on Feb 19 for the new model (test.tex) ###########
+total_population = {(key): 10000 for key in dps}
+
+# Demand rate per types of services during opening hours (oh)
+demand_rate_opening_hours_v2 = np.array([
+    [0.0022] * len(dps), # basic
+    [0.0006] * len(dps), # maternal1
+    [0.0001] * len(dps), # maternal2
+])
+
+demand_rate_opening_hours_v2_df = pd.DataFrame(demand_rate_opening_hours_v2, index=services)
+demand_rate_opening_hours_v2_df = demand_rate_opening_hours_v2_df.T
+
+dr_oh_v2 = {(dps[i], services[s]): demand_rate_opening_hours_v2_df.iloc[i, s] 
+      for i, s in itertools.product(range(len(dps)), range(len(services)))}
+
+dd_oh_v2 = {(key): int(round(total_population[i] * dr_oh_v2[key])) for i in dps for key in dr_oh_v2} # I needed to use round instead of np.floor to get my desired results
+
+
+# Demand rate per types of services outside opening hours (closing hours ---> ch)
+demand_rate_closing_hours_v2 = np.array([
+    [0.0003] * len(dps), # basic
+    [0.0002] * len(dps), # maternal1
+    [0.0001] * len(dps), # maternal2
+])
+
+demand_rate_closing_hours_v2_df = pd.DataFrame(demand_rate_closing_hours_v2, index=services)
+demand_rate_closing_hours_v2_df = demand_rate_closing_hours_v2_df.T
+
+dr_ch_v2 = {(dps[i], services[s]): demand_rate_closing_hours_v2_df.iloc[i, s] 
+      for i, s in itertools.product(range(len(dps)), range(len(services)))}
+
+dd_ch_v2 = {(key): int(round(total_population[i] * dr_ch_v2[key])) for i in dps for key in dr_ch_v2} # I needed to use round instead of np.floor to get my desired results
+
