@@ -70,13 +70,13 @@ health_workers = ['doctor','nurse','midwife']
 levels = ['hp', 'hc']
 
 # HFs to locate (at most)
-HFs_to_locate = [3,2]
+HFs_to_locate = [2,1]
 
 # Monthly demands per service
 demand_month = np.array([
-    [700] * len(dps), # basic
-    [200] * len(dps), # maternal1
-    [50] * len(dps), # maternal2
+    [1000] * len(dps), # basic
+    [400] * len(dps), # maternal1
+    [200] * len(dps), # maternal2
 ])
 
 demand_month_df = pd.DataFrame(demand_month, index=services)
@@ -96,9 +96,9 @@ are given monthly demands:
 But now I will assume I have the integer values defined below
 """
 demand_day = np.array([
-    [25] * len(dps), # basic
-    [8] * len(dps), # maternal1
-    [2] * len(dps), # maternal2
+    [2500] * len(dps), # basic
+    [800] * len(dps), # maternal1
+    [200] * len(dps), # maternal2
 ])
 
 demand_day_df = pd.DataFrame(demand_day, index=services)
@@ -110,8 +110,8 @@ dd = {(dps[i], services[s]): demand_day_df.iloc[i, s]
 # Demand rate per types of services during opening hours
 demand_rate_opening_hours = np.array([
     [0.9] * len(dps), # basic
-    [0.8] * len(dps), # maternal1
-    [0.7] * len(dps), # maternal2
+    [0.3] * len(dps), # maternal1
+    [0.2] * len(dps), # maternal2
 ])
 
 demand_rate_opening_hours_df = pd.DataFrame(demand_rate_opening_hours, index=services)
@@ -241,9 +241,9 @@ total_population = {(key): 10000 for key in dps}
 
 # Demand rate per types of services during opening hours (oh)
 demand_rate_opening_hours_v2 = np.array([
-    [0.0022] * len(dps), # basic
-    [0.0006] * len(dps), # maternal1
-    [0.0001] * len(dps), # maternal2
+    [0.01] * len(dps), # basic
+    [0.02] * len(dps), # maternal1
+    [0.03] * len(dps), # maternal2
 ])
 
 demand_rate_opening_hours_v2_df = pd.DataFrame(demand_rate_opening_hours_v2, index=services)

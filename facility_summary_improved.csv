@@ -1,0 +1,2 @@
+Facility ID,Facility Type,Total Demand (Total Capacity),Overall Utilization (%),Max Distance,Demand - Basic (Capacity),Demand - Maternal1 (Capacity),Demand - Maternal2 (Capacity),Personnel - Doctor,Personnel - Nurse,Personnel - Midwife
+j4,hc,0.0+48.0 (161),29.8%,5.0,0.0+0.0 (78),0.0+32.0 (64),0.0+16.0 (19),1,4,4

@@ -270,11 +270,12 @@ def model_mshlam_feb25(I, J, J_HP, J_HC, S, P, L, n_HF, Pi, r1, r2, d1, d2, t, n
 # %% 
 model = model_mshlam_feb25(I, J, J_HP, J_HC, S, P, L, n_HF, Pi, r1, r2, d1, d2, t, n_W, lb, a_HF, a_W, t1max, q, c)
 solver = pyo.SolverFactory('cplex')
-# solver.options['timelimit'] = 60
+solver.options['timelimit'] = 10
 results = solver.solve(model, tee=True)
 print(results)
 
-
+#%% Plot the solution
+'''
 import matplotlib.pyplot as plt
 import geopandas as gpd
 from shapely.geometry import LineString
@@ -394,11 +395,149 @@ if model.taumax.value is not None and model.taumax.value > 0:
 if model.deltamax.value is not None and model.deltamax.value > 0:
     print(f"deltamax = {model.deltamax.value}") 
 
+'''
+#%% Create Summary table
+import pandas as pd
 
+rows = []
 
-# In the terminal:
+for j in model.J:
+    # Determine if facility j is open by checking if any y[j,l] > 0
+    facility_type = None
+    for l in model.L:
+        if model.y[j, l].value is not None and model.y[j, l].value > 0:
+            facility_type = l
+            break  # Each location is assigned at most one type per constraint R3
+    if facility_type is None:
+        continue  # Skip facilities that are not open
 
-for var in CUAMM_Opt.model.component_objects(CUAMM_Opt.pyo.Var, active=True):
-    for index in var:
-        if var[index].value > 0:
-            print(f"{var.name}[{index}] = {var[index].value}")
+    # Compute f1 and f2 demand per service for facility j (without aggregating them)
+    f1_sums = {}
+    f2_sums = {}
+    for s in model.S:
+        f1_total = 0
+        f2_total = 0
+        for i in model.I:
+            f1_val = model.f1[i, j, s].value if model.f1[i, j, s].value is not None else 0
+            f2_val = model.f2[i, j, s].value if model.f2[i, j, s].value is not None else 0
+            f1_total += f1_val
+            f2_total += f2_val
+        f1_sums[s] = f1_total
+        f2_sums[s] = f2_total
+
+    # Compute available time and capacity (number of services available) per service
+    capacity_per_service = {}
+    for s in model.S:
+        available_time = 0
+        for p in model.P:
+            w_val = model.w[j, p].value if model.w[j, p].value is not None else 0
+            available_time += model.c[p] * model.a_W[p, s] * w_val
+        service_time = q[s]
+        capacity = int(available_time / service_time) if service_time > 0 else 0
+        capacity_per_service[s] = capacity
+
+    # Compute overall total demand and total capacity over all services
+    total_f1 = sum(f1_sums[s] for s in model.S)
+    total_f2 = sum(f2_sums[s] for s in model.S)
+    total_capacity = sum(capacity_per_service[s] for s in model.S)
+    
+    # Compute overall utilization as a managerial indicator
+    total_demand_value = total_f1 + total_f2
+    utilization = total_demand_value / total_capacity if total_capacity > 0 else None
+
+    # Compute maximum distance from facility j to any assigned demand point
+    assigned_distances = []
+    for i in model.I:
+        if ((model.x1[i, j].value is not None and model.x1[i, j].value > 0) or 
+            (model.x2[i, j].value is not None and model.x2[i, j].value > 0)):
+            assigned_distances.append(model.t[i, j])
+    max_distance = max(assigned_distances) if assigned_distances else 0
+
+    # Build the row; overall total demand shows as "f1_total+f2_total (total_capacity)"
+    row = {
+        "Facility": j,
+        "Type": facility_type,
+        "Total Demand": f"{total_f1}+{total_f2} ({total_capacity})",
+        "Utilization (%)": f"{utilization*100:.1f}%" if utilization is not None else "N/A",
+        "Max Distance": max_distance
+    }
+    
+    # For each service, show demand as "f1+f2 (capacity)"
+    for s in model.S:
+        row[f"Demand_{s}"] = f"{f1_sums[s]}+{f2_sums[s]} ({capacity_per_service[s]})"
+    
+    # Add personnel columns, ensuring they are integers
+    for p in model.P:
+        personnel = model.w[j, p].value
+        personnel_int = int(personnel) if personnel is not None else 0
+        row[f"Personnel_{p}"] = personnel_int
+    
+    rows.append(row)
+
+# Create a DataFrame from the collected rows
+summary_table = pd.DataFrame(rows)
+
+# Enhance headers for managerial insight
+header_mapping = {
+    "Facility": "Facility ID",
+    "Type": "Facility Type",
+    "Total Demand": "Total Demand (Total Capacity)",
+    "Utilization (%)": "Overall Utilization (%)",
+    "Max Distance": "Max Distance"
+}
+for s in model.S:
+    header_mapping[f"Demand_{s}"] = f"Demand - {s.capitalize()} (Capacity)"
+for p in model.P:
+    header_mapping[f"Personnel_{p}"] = f"Personnel - {p.capitalize()}"
+
+summary_table.rename(columns=header_mapping, inplace=True)
+
+# Define a helper function for conditional formatting.
+# It expects strings in the format "f1+f2 (capacity)" or "number (capacity)".
+def highlight_diff(val):
+    try:
+        # Remove any potential spaces and split by '('.
+        left, right = val.split('(')
+        left = left.strip()
+        capacity = int(right.split(')')[0].strip())
+        if '+' in left:
+            f1, f2 = left.split('+')
+            demand_value = int(f1.strip()) + int(f2.strip())
+        else:
+            demand_value = int(left)
+        diff = capacity - demand_value
+        if diff < 0:
+            return 'background-color: salmon'   # Demand exceeds capacity.
+        elif diff > 0:
+            return 'background-color: lightgreen'  # Spare capacity available.
+        else:
+            return ''
+    except Exception:
+        return ''
+
+# Apply Pandas styling (for generating an HTML file).
+styled_table = summary_table.style.set_table_styles([
+    {'selector': 'th',
+     'props': [('background-color', '#4F81BD'),
+               ('color', 'white'),
+               ('font-size', '12pt'),
+               ('text-align', 'center'),
+               ('padding', '8px')]}
+]).set_properties(**{'text-align': 'center', 'font-size': '11pt'})
+
+# Apply conditional formatting on demand columns.
+for col in summary_table.columns:
+    if "Demand - " in col or col == "Total Demand (Total Capacity)":
+        styled_table = styled_table.map(highlight_diff, subset=[col])
+
+styled_table = styled_table.set_caption("Facility Summary Table - Managerial Insights")
+
+# Save the styled table as an HTML file (openable in any browser)
+html = styled_table.to_html()
+with open("facility_summary_improved.html", "w") as f:
+    f.write(html)
+print("Summary table saved as 'facility_summary_improved.html'.")
+
+# Optionally, export the raw table to CSV and Excel files:
+summary_table.to_csv("facility_summary_improved.csv", index=False)
+summary_table.to_excel("facility_summary_improved.xlsx", index=False)
