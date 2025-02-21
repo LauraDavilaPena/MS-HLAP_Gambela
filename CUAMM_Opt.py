@@ -8,9 +8,8 @@ import pandas as pd
 import itertools
 import pyomo.environ as pyo
 import matplotlib.pyplot as plt
-from parameters import location_nodes, demand_points_gdf, hfs_gdf, hps_gdf, hcs_gdf
-from parameters import dps, hfs, hps, hcs, services, health_workers, levels, HFs_to_locate, dd_oh, dd_ch, distance_matrix, workers_to_allocate, lb_workers, a_HF, a_W, t1max, service_time, working_hours, get_nearby_HFs
-from parameters import total_population, dr_oh_v2, dr_ch_v2, dd_oh_v2, dd_ch_v2 #new Feb 19
+from parameters import dps, hfs, hps, hcs, services, health_workers, levels, HFs_to_locate, distance_matrix, workers_to_allocate, lb_workers, a_HF, a_W, t1max, service_time, working_hours
+from parameters import total_population, dr_oh, dr_ch, dd_oh, dd_ch #new Feb 19
 
 
 # Define the sets and parameters
@@ -27,16 +26,16 @@ n_W = dict(zip(health_workers, workers_to_allocate))
 #d1 = dd_oh
 #d2 = dd_ch
 Pi = total_population #new Feb 19
-r1 = dr_oh_v2 #new Feb 19
-r2 = dr_ch_v2 #new Feb 19
-d1 = dd_oh_v2 #new Feb 19; either this is necessary, or Pi and r1
-d2 = dd_ch_v2 #new Feb 19; either this is necessary, or Pi and r2
+r1 = dr_oh #new Feb 19
+r2 = dr_ch #new Feb 19
+d1 = dd_oh #new Feb 19; either this is necessary, or Pi and r1
+d2 = dd_ch #new Feb 19; either this is necessary, or Pi and r2
 lb = lb_workers
 q = dict(zip(services, service_time))
 c = dict(zip(health_workers, working_hours))
 #S_l = {l: {s for s in S if a_HF.get((s, l), 0) == 1} for l in L}
 
-total_sum = sum(dd_oh_v2.values())
+total_sum = sum(dd_oh.values())
 print(total_sum)
 
 
@@ -143,7 +142,7 @@ def model_mshlam_feb25(I, J, J_HP, J_HC, S, P, L, n_HF, Pi, r1, r2, d1, d2, t, n
     # OBJECTIVES
     @m.Constraint()
     def C_obj1(m):
-        return m.obj1 == pyo.quicksum(m.f1[i, j, s] for i in m.I for j in m.J for s in m.S)
+        return m.obj1 == pyo.quicksum((m.f1[i, j, s]+m.f2[i,j,s]) for i in m.I for j in m.J for s in m.S)
 
     @m.Constraint()
     def C_obj2(m):
@@ -163,8 +162,9 @@ def model_mshlam_feb25(I, J, J_HP, J_HC, S, P, L, n_HF, Pi, r1, r2, d1, d2, t, n
     
     @m.Objective(sense=pyo.maximize)
     def Combined_Objective(m):
-        return 1/max_obj1 * m.obj1 - (1/max_obj2) * m.obj2 - (1/max_obj3) * m.obj3 
-        #return m.obj1 
+        #return 1/max_obj1 * m.obj1 - (1/max_obj2) * m.obj2 - (1/max_obj3) * m.obj3 
+        return m.obj1 
+        #return -m.obj3 
     
     # CONSTRAINTS
     @m.Constraint(m.L)
@@ -270,96 +270,96 @@ def model_mshlam_feb25(I, J, J_HP, J_HC, S, P, L, n_HF, Pi, r1, r2, d1, d2, t, n
 # %% 
 model = model_mshlam_feb25(I, J, J_HP, J_HC, S, P, L, n_HF, Pi, r1, r2, d1, d2, t, n_W, lb, a_HF, a_W, t1max, q, c)
 solver = pyo.SolverFactory('cplex')
-solver.options['timelimit'] = 10
+solver.options['timelimit'] = 100
 results = solver.solve(model, tee=True)
 print(results)
 
+
 #%% Plot the solution
-'''
-import matplotlib.pyplot as plt
-import geopandas as gpd
-from shapely.geometry import LineString
 
-def plot_solution(model, demand_points_gdf, hfs_gdf):
-    """
-    Visualise the solution of the Pyomo model without location names and without the surrounding box.
+# import matplotlib.pyplot as plt
+# import geopandas as gpd
+# from shapely.geometry import LineString
+
+# def plot_solution(model, demand_points_gdf, hfs_gdf):
+#     """
+#     Visualise the solution of the Pyomo model without location names and without the surrounding box.
     
-    Parameters:
-        model: Solved Pyomo model
-        demand_points_gdf: GeoDataFrame with demand points (geometry and labels)
-        hfs_gdf: GeoDataFrame with potential locations for health posts (HP) and health centres (HC) (geometry and labels)
-    """
-    fig, ax = plt.subplots(figsize=(10, 10))
+#     Parameters:
+#         model: Solved Pyomo model
+#         demand_points_gdf: GeoDataFrame with demand points (geometry and labels)
+#         hfs_gdf: GeoDataFrame with potential locations for health posts (HP) and health centres (HC) (geometry and labels)
+#     """
+#     fig, ax = plt.subplots(figsize=(10, 10))
 
-    # Plot demand points (without names)
-    demand_points_gdf.plot(ax=ax, color='blue', markersize=50)
+#     # Plot demand points (without names)
+#     demand_points_gdf.plot(ax=ax, color='blue', markersize=50)
 
-    # Plot HPs (triangles) and HCs (squares) without labels
-    hps_gdf = hfs_gdf[hfs_gdf['label'].isin(model.J_HP)]
-    hcs_gdf = hfs_gdf[hfs_gdf['label'].isin(model.J_HC)]
-    hps_gdf.plot(ax=ax, color='green', marker='^', markersize=80)
-    hcs_gdf.plot(ax=ax, color='orange', marker='s', markersize=80)
+#     # Plot HPs (triangles) and HCs (squares) without labels
+#     hps_gdf = hfs_gdf[hfs_gdf['label'].isin(model.J_HP)]
+#     hcs_gdf = hfs_gdf[hfs_gdf['label'].isin(model.J_HC)]
+#     hps_gdf.plot(ax=ax, color='green', marker='^', markersize=80)
+#     hcs_gdf.plot(ax=ax, color='orange', marker='s', markersize=80)
 
-    # Plot assignments with arrows
-    for i in model.I:
-        for j in model.J:
-            if model.x1[i, j].value > 0 or model.x2[i, j].value > 0:
-                # Get coordinates for the demand point and facility
-                dp_coords = demand_points_gdf.loc[demand_points_gdf['label'] == i, 'geometry'].values[0]
-                hf_coords = hfs_gdf.loc[hfs_gdf['label'] == j, 'geometry'].values[0]
+#     # Plot assignments with arrows
+#     for i in model.I:
+#         for j in model.J:
+#             if model.x1[i, j].value > 0 or model.x2[i, j].value > 0:
+#                 # Get coordinates for the demand point and facility
+#                 dp_coords = demand_points_gdf.loc[demand_points_gdf['label'] == i, 'geometry'].values[0]
+#                 hf_coords = hfs_gdf.loc[hfs_gdf['label'] == j, 'geometry'].values[0]
 
-                # Determine arrow colour
-                if model.x1[i, j].value > 0 and model.x2[i, j].value > 0:
-                    arrow_color = 'black'
-                    linewidth = 2
-                elif model.x1[i, j].value > 0:
-                    arrow_color = 'yellow'
-                    linewidth = 1
-                elif model.x2[i, j].value > 0:
-                    arrow_color = 'red'
-                    linewidth = 1
+#                 # Determine arrow colour
+#                 if model.x1[i, j].value > 0 and model.x2[i, j].value > 0:
+#                     arrow_color = 'black'
+#                     linewidth = 2
+#                 elif model.x1[i, j].value > 0:
+#                     arrow_color = 'yellow'
+#                     linewidth = 1
+#                 elif model.x2[i, j].value > 0:
+#                     arrow_color = 'red'
+#                     linewidth = 1
 
-                ax.annotate(
-                    '', xy=(hf_coords.x, hf_coords.y), xytext=(dp_coords.x, dp_coords.y),
-                    arrowprops=dict(arrowstyle='->', color=arrow_color, lw=linewidth),
-                    zorder=1
-                )
+#                 ax.annotate(
+#                     '', xy=(hf_coords.x, hf_coords.y), xytext=(dp_coords.x, dp_coords.y),
+#                     arrowprops=dict(arrowstyle='->', color=arrow_color, lw=linewidth),
+#                     zorder=1
+#                 )
 
-    # Add information text for each facility (demand and workers), without the facility name
-    for j in model.J:
-        assigned_demand_points = sum(model.x1[i, j].value > 0 or model.x2[i, j].value > 0 for i in model.I)
-        workers = {p: model.w[j, p].value for p in model.P}
-        status = "Open" if sum(model.y[j, l].value for l in model.L) > 0 else "Closed"
-        hf_coords = hfs_gdf.loc[hfs_gdf['label'] == j, 'geometry'].values[0]
-        ax.text(
-            hf_coords.x + 0.1, hf_coords.y,
-            f"{status}\nDemand: {assigned_demand_points}\nWorkers: {workers}",
-            fontsize=8, color='black'
-        )
+#     # Add information text for each facility (demand and workers), without the facility name
+#     for j in model.J:
+#         assigned_demand_points = sum(model.x1[i, j].value > 0 or model.x2[i, j].value > 0 for i in model.I)
+#         workers = {p: model.w[j, p].value for p in model.P}
+#         status = "Open" if sum(model.y[j, l].value for l in model.L) > 0 else "Closed"
+#         hf_coords = hfs_gdf.loc[hfs_gdf['label'] == j, 'geometry'].values[0]
+#         ax.text(
+#             hf_coords.x + 0.1, hf_coords.y,
+#             f"{status}\nDemand: {assigned_demand_points}\nWorkers: {workers}",
+#             fontsize=8, color='black'
+#         )
 
-    # Add information text for each demand point (flows), without the demand point name
-    for i in model.I:
-        f1_sum = sum(model.f1[i, j, s].value for j in model.J for s in model.S)
-        f2_sum = sum(model.f2[i, j, s].value for j in model.J for s in model.S)
-        total_demand = sum(model.d1[i, s] + model.d2[i, s] for s in model.S)
-        dp_coords = demand_points_gdf.loc[demand_points_gdf['label'] == i, 'geometry'].values[0]
-        ax.text(
-            dp_coords.x + 0.1, dp_coords.y,
-            f"f': {f1_sum}\nf'': {f2_sum}\nTotal: {total_demand}",
-            fontsize=8, color='blue'
-        )
+#     # Add information text for each demand point (flows), without the demand point name
+#     for i in model.I:
+#         f1_sum = sum(model.f1[i, j, s].value for j in model.J for s in model.S)
+#         f2_sum = sum(model.f2[i, j, s].value for j in model.J for s in model.S)
+#         total_demand = sum(model.d1[i, s] + model.d2[i, s] for s in model.S)
+#         dp_coords = demand_points_gdf.loc[demand_points_gdf['label'] == i, 'geometry'].values[0]
+#         ax.text(
+#             dp_coords.x + 0.1, dp_coords.y,
+#             f"f': {f1_sum}\nf'': {f2_sum}\nTotal: {total_demand}",
+#             fontsize=8, color='blue'
+#         )
 
-    # Remove the axes (box) for a cleaner look
-    ax.set_axis_off()
+#     # Remove the axes (box) for a cleaner look
+#     ax.set_axis_off()
 
-    plt.title("Model Solution: Demand and Facility Assignments")
-    plt.show()
+#     plt.title("Model Solution: Demand and Facility Assignments")
+#     plt.show()
 
 
-# Example usage:
-print(results.solver.termination_condition)
-plot_solution(model, demand_points_gdf, hfs_gdf)
-
+# # Example usage:
+# print(results.solver.termination_condition)
+# plot_solution(model, demand_points_gdf, hfs_gdf)
 
 
 # Display only the selected variables
@@ -395,7 +395,7 @@ if model.taumax.value is not None and model.taumax.value > 0:
 if model.deltamax.value is not None and model.deltamax.value > 0:
     print(f"deltamax = {model.deltamax.value}") 
 
-'''
+
 #%% Create Summary table
 import pandas as pd
 
@@ -436,7 +436,7 @@ for j in model.J:
         capacity = int(available_time / service_time) if service_time > 0 else 0
         capacity_per_service[s] = capacity
 
-    # Compute overall total demand and total capacity over all services
+    # Compute overall total satisfied demand and total capacity over all services
     total_f1 = sum(f1_sums[s] for s in model.S)
     total_f2 = sum(f2_sums[s] for s in model.S)
     total_capacity = sum(capacity_per_service[s] for s in model.S)
@@ -453,11 +453,11 @@ for j in model.J:
             assigned_distances.append(model.t[i, j])
     max_distance = max(assigned_distances) if assigned_distances else 0
 
-    # Build the row; overall total demand shows as "f1_total+f2_total (total_capacity)"
+    # Build the row; overall total satisfied demand shows as "f1_total+f2_total (total_capacity)"
     row = {
         "Facility": j,
         "Type": facility_type,
-        "Total Demand": f"{total_f1}+{total_f2} ({total_capacity})",
+        "Total Satisfied Demand": f"{total_f1}+{total_f2} ({total_capacity})",
         "Utilization (%)": f"{utilization*100:.1f}%" if utilization is not None else "N/A",
         "Max Distance": max_distance
     }
@@ -481,7 +481,7 @@ summary_table = pd.DataFrame(rows)
 header_mapping = {
     "Facility": "Facility ID",
     "Type": "Facility Type",
-    "Total Demand": "Total Demand (Total Capacity)",
+    "Total Satisfied Demand": "Total Satisfied Demand (Total Capacity)",
     "Utilization (%)": "Overall Utilization (%)",
     "Max Distance": "Max Distance"
 }
@@ -527,7 +527,7 @@ styled_table = summary_table.style.set_table_styles([
 
 # Apply conditional formatting on demand columns.
 for col in summary_table.columns:
-    if "Demand - " in col or col == "Total Demand (Total Capacity)":
+    if "Demand - " in col or col == "Total Satisfied Demand (Total Capacity)":
         styled_table = styled_table.map(highlight_diff, subset=[col])
 
 styled_table = styled_table.set_caption("Facility Summary Table - Managerial Insights")

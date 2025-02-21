@@ -1,2 +1,3 @@
-Facility ID,Facility Type,Total Demand (Total Capacity),Overall Utilization (%),Max Distance,Demand - Basic (Capacity),Demand - Maternal1 (Capacity),Demand - Maternal2 (Capacity),Personnel - Doctor,Personnel - Nurse,Personnel - Midwife
-j4,hc,0.0+48.0 (161),29.8%,5.0,0.0+0.0 (78),0.0+32.0 (64),0.0+16.0 (19),1,4,4
+Facility ID,Facility Type,Total Satisfied Demand (Total Capacity),Overall Utilization (%),Max Distance,Demand - Basic (Capacity),Demand - Maternal1 (Capacity),Demand - Maternal2 (Capacity),Personnel - Doctor,Personnel - Nurse,Personnel - Midwife
+j3,hc,3.0+32.0 (89),39.3%,6.4,0.0+0.0 (46),0.0+32.0 (32),3.0+0.0 (11),1,2,2
+j4,hp,224.0+0.0 (322),69.6%,3.61,168.0+0.0 (168),56.0+0.0 (112),0.0+0.0 (42),4,7,7

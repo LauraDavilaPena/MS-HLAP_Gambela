@@ -1,3 +1,4 @@
+# %%
 # (additional) indices and sets
 import geopandas as gdp
 import numpy as np
@@ -59,7 +60,7 @@ hps = hfs_gdf[hfs_gdf['geometry'].isin(hps_gdf['geometry'])]['label'].to_numpy()
 hcs = hfs_gdf[hfs_gdf['geometry'].isin(hcs_gdf['geometry'])]['label'].to_numpy()
 
 
-
+# %%
 # Services
 services = ['basic','maternal1','maternal2']
 
@@ -70,86 +71,7 @@ health_workers = ['doctor','nurse','midwife']
 levels = ['hp', 'hc']
 
 # HFs to locate (at most)
-HFs_to_locate = [2,1]
-
-# Monthly demands per service
-demand_month = np.array([
-    [1000] * len(dps), # basic
-    [400] * len(dps), # maternal1
-    [200] * len(dps), # maternal2
-])
-
-demand_month_df = pd.DataFrame(demand_month, index=services)
-demand_month_df = demand_month_df.T
-
-#create a dictionary for monthly demands
-dm = {(dps[i], services[s]): demand_month_df.iloc[i, s] 
-      for i, s in itertools.product(range(len(dps)), range(len(services)))}
-
-# Daily demands per service 
-"""
-This is what we would need to do in a normal situation, when we
-are given monthly demands:
-
-#dd = {key: value / 30 for key, value in dm.items()}
-
-But now I will assume I have the integer values defined below
-"""
-demand_day = np.array([
-    [2500] * len(dps), # basic
-    [800] * len(dps), # maternal1
-    [200] * len(dps), # maternal2
-])
-
-demand_day_df = pd.DataFrame(demand_day, index=services)
-demand_day_df = demand_day_df.T
-#create a dictionary for daily demands (location, service): demand
-dd = {(dps[i], services[s]): demand_day_df.iloc[i, s] 
-      for i, s in itertools.product(range(len(dps)), range(len(services)))}
-
-# Demand rate per types of services during opening hours
-demand_rate_opening_hours = np.array([
-    [0.9] * len(dps), # basic
-    [0.3] * len(dps), # maternal1
-    [0.2] * len(dps), # maternal2
-])
-
-demand_rate_opening_hours_df = pd.DataFrame(demand_rate_opening_hours, index=services)
-demand_rate_opening_hours_df = demand_rate_opening_hours_df.T
-
-dr_oh = {(dps[i], services[s]): demand_rate_opening_hours_df.iloc[i, s] 
-      for i, s in itertools.product(range(len(dps)), range(len(services)))}
-
-# Daily demands per service during opening hours:
-"""
-This is what we would need to do in a normal situation:
-
-dd_oh = {(key): dd[key] * dr_oh[key] for key in dd}
-
-But now I will assume I have the integer values below
-"""
-dd_oh = {(key): int(np.floor(dd[key] * dr_oh[key])) for key in dd}
-
-
-# Demand rate per types of services outside opening hours (let's say: closing hours)
-demand_rate_closing_hours = 1 - demand_rate_opening_hours
-demand_rate_closing_hours_df = pd.DataFrame(demand_rate_closing_hours, index=services)
-demand_rate_closing_hours_df = demand_rate_closing_hours_df.T
-
-dr_ch = {(dps[i], services[s]): demand_rate_closing_hours_df.iloc[i, s]
-              for i, s in itertools.product(range(len(dps)), range(len(services)))}
-
-
-# Daily demands per service outside opening hours:
-"""
-This is what we would need to do in a normal situation:
-
-dd_ch = {(key): dd[key] * dr_ch[key] for key in dd}
-
-But now I will assume I have the integer values below
-"""
-dd_ch = {(key): int(np.ceil(dd[key] * dr_ch[key])) for key in dd}
-
+HFs_to_locate = [4,2]
 
 # Distance matrix
 distance_matrix = pd.read_excel('distance_matrix_ij.xlsx', index_col=0)
@@ -159,7 +81,7 @@ distance_matrix_df.loc['dp3','hc1']
 """
 
 # Number of health workers of each type to allocate
-workers_to_allocate = [2, 7, 7]
+workers_to_allocate = [5, 9, 9]
 
 # Lower bounds on the number of workers per HF-type
 lb_workers = np.array([
@@ -201,7 +123,7 @@ a_W = {(health_workers[p],services[s]): services_per_worker_df.iloc[p, s]
 
 
 # Maximum coverage distance for first assignment
-t1max = 3.5
+t1max = 4
 
 # Service time
 service_time = [0.5, 1, 2]
@@ -210,63 +132,38 @@ service_time = [0.5, 1, 2]
 working_hours = [7, 8, 8]
   
 
-def get_nearby_HFs(distance_matrix, dps, t1max):
-    """
-    Finds nearby health facilities (HPs and HCs) for each demand point within a threshold distance.
-
-    Parameters:
-        distance_matrix (pd.DataFrame): A distance matrix where rows and columns are locations.
-        dps (list): List of demand points.
-        t1max (float): The maximum distance threshold.
-
-    Returns:
-        dict: A dictionary where keys are demand points and values are lists of nearby health facilities.
-    """
-    J_i = {}
-    for dp in distance_matrix.index[:len(dps)]:
-        # Get distances for the demand points to all HFs (HPs and HCs)
-        distances = distance_matrix.loc[dp]
-        
-        nearby_HFs = distances[(distances < t1max)].index.tolist()
-        
-        # Store the result for the current demand point
-        J_i[dp] = nearby_HFs
-    
-    return J_i
-
-
 
 ########### Included on Feb 19 for the new model (test.tex) ###########
 total_population = {(key): 10000 for key in dps}
 
 # Demand rate per types of services during opening hours (oh)
-demand_rate_opening_hours_v2 = np.array([
+demand_rate_opening_hours = np.array([
     [0.01] * len(dps), # basic
     [0.02] * len(dps), # maternal1
     [0.03] * len(dps), # maternal2
 ])
 
-demand_rate_opening_hours_v2_df = pd.DataFrame(demand_rate_opening_hours_v2, index=services)
-demand_rate_opening_hours_v2_df = demand_rate_opening_hours_v2_df.T
+demand_rate_opening_hours_df = pd.DataFrame(demand_rate_opening_hours, index=services)
+demand_rate_opening_hours_df = demand_rate_opening_hours_df.T
 
-dr_oh_v2 = {(dps[i], services[s]): demand_rate_opening_hours_v2_df.iloc[i, s] 
+dr_oh = {(dps[i], services[s]): demand_rate_opening_hours_df.iloc[i, s] 
       for i, s in itertools.product(range(len(dps)), range(len(services)))}
 
-dd_oh_v2 = {(key): int(round(total_population[i] * dr_oh_v2[key])) for i in dps for key in dr_oh_v2} # I needed to use round instead of np.floor to get my desired results
+dd_oh = {(key): int(round(total_population[i] * dr_oh[key])) for i in dps for key in dr_oh} # I needed to use round instead of np.floor to get my desired results
 
 
 # Demand rate per types of services outside opening hours (closing hours ---> ch)
-demand_rate_closing_hours_v2 = np.array([
-    [0.0003] * len(dps), # basic
-    [0.0002] * len(dps), # maternal1
-    [0.0001] * len(dps), # maternal2
+demand_rate_closing_hours = np.array([
+    [0.01] * len(dps), # basic
+    [0.02] * len(dps), # maternal1
+    [0.03] * len(dps), # maternal2
 ])
 
-demand_rate_closing_hours_v2_df = pd.DataFrame(demand_rate_closing_hours_v2, index=services)
-demand_rate_closing_hours_v2_df = demand_rate_closing_hours_v2_df.T
+demand_rate_closing_hours_df = pd.DataFrame(demand_rate_closing_hours, index=services)
+demand_rate_closing_hours_df = demand_rate_closing_hours_df.T
 
-dr_ch_v2 = {(dps[i], services[s]): demand_rate_closing_hours_v2_df.iloc[i, s] 
+dr_ch = {(dps[i], services[s]): demand_rate_closing_hours_df.iloc[i, s] 
       for i, s in itertools.product(range(len(dps)), range(len(services)))}
 
-dd_ch_v2 = {(key): int(round(total_population[i] * dr_ch_v2[key])) for i in dps for key in dr_ch_v2} # I needed to use round instead of np.floor to get my desired results
+dd_ch = {(key): int(round(total_population[i] * dr_ch[key])) for i in dps for key in dr_ch} # I needed to use round instead of np.floor to get my desired results
 
