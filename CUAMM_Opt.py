@@ -462,9 +462,9 @@ for j in model.J:
         "Max Distance": max_distance
     }
     
-    # For each service, show demand as "f1+f2 (capacity)"
+    # For each service, show satisfied demand as "f1+f2 (capacity)"
     for s in model.S:
-        row[f"Demand_{s}"] = f"{f1_sums[s]}+{f2_sums[s]} ({capacity_per_service[s]})"
+        row[f"Satisfied Demand_{s}"] = f"{f1_sums[s]}+{f2_sums[s]} ({capacity_per_service[s]})"
     
     # Add personnel columns, ensuring they are integers
     for p in model.P:
@@ -486,7 +486,7 @@ header_mapping = {
     "Max Distance": "Max Distance"
 }
 for s in model.S:
-    header_mapping[f"Demand_{s}"] = f"Demand - {s.capitalize()} (Capacity)"
+    header_mapping[f"Satisfied Demand_{s}"] = f"Satisfied Demand - {s.capitalize()} (Capacity)"
 for p in model.P:
     header_mapping[f"Personnel_{p}"] = f"Personnel - {p.capitalize()}"
 
