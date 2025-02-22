@@ -81,7 +81,7 @@ distance_matrix_df.loc['dp3','hc1']
 """
 
 # Number of health workers of each type to allocate
-workers_to_allocate = [5, 9, 9]
+workers_to_allocate = [50, 90, 90]
 
 # Lower bounds on the number of workers per HF-type
 lb_workers = np.array([
@@ -123,7 +123,7 @@ a_W = {(health_workers[p],services[s]): services_per_worker_df.iloc[p, s]
 
 
 # Maximum coverage distance for first assignment
-t1max = 4
+t1max = 20
 
 # Service time
 service_time = [0.5, 1, 2]
@@ -138,9 +138,9 @@ total_population = {(key): 10000 for key in dps}
 
 # Demand rate per types of services during opening hours (oh)
 demand_rate_opening_hours = np.array([
-    [0.01] * len(dps), # basic
-    [0.02] * len(dps), # maternal1
-    [0.03] * len(dps), # maternal2
+    [0.001] * len(dps), # basic
+    [0.002] * len(dps), # maternal1
+    [0.003] * len(dps), # maternal2
 ])
 
 demand_rate_opening_hours_df = pd.DataFrame(demand_rate_opening_hours, index=services)
@@ -154,9 +154,9 @@ dd_oh = {(key): int(round(total_population[i] * dr_oh[key])) for i in dps for ke
 
 # Demand rate per types of services outside opening hours (closing hours ---> ch)
 demand_rate_closing_hours = np.array([
-    [0.01] * len(dps), # basic
-    [0.02] * len(dps), # maternal1
-    [0.03] * len(dps), # maternal2
+    [0.001] * len(dps), # basic
+    [0.002] * len(dps), # maternal1
+    [0.003] * len(dps), # maternal2
 ])
 
 demand_rate_closing_hours_df = pd.DataFrame(demand_rate_closing_hours, index=services)

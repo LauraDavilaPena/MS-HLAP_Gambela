@@ -109,6 +109,7 @@ def model_mshlam_feb25(I, J, J_HP, J_HC, S, P, L, n_HF, Pi, r1, r2, d1, d2, t, n
     
     m.n_W = pyo.Param(m.P, initialize=n_W, within=pyo.Integers)
     m.lb = pyo.Param(m.P, m.L, initialize=lb, within=pyo.Integers)
+    #Todo: I think a_l makes more sence
     m.a_HF = pyo.Param(m.S, m.L, initialize=a_HF, within=pyo.Binary)
     m.a_W = pyo.Param(m.P, m.S, initialize=a_W, within=pyo.Binary)
     
@@ -171,7 +172,6 @@ def model_mshlam_feb25(I, J, J_HP, J_HC, S, P, L, n_HF, Pi, r1, r2, d1, d2, t, n
     def R1_budget_HFs(m, l):
         return pyo.quicksum(m.y[j,l] for j in m.J) <= m.n_HF[l]
     
-    
     @m.Constraint(m.J, m.L)
     def R2_location_HFs(m, j, l):
         if (j not in m.J_HP and l == 'hp') or (j not in m.J_HC and l == 'hc'):
@@ -183,23 +183,24 @@ def model_mshlam_feb25(I, J, J_HP, J_HC, S, P, L, n_HF, Pi, r1, r2, d1, d2, t, n
     def R3_one_HF_per_location(m, j):
         return pyo.quicksum(m.y[j,l] for l in m.L) <= 1
         
-    
+  
     @m.Constraint(m.I)
     def R4_first_assignment(m, i):
         return pyo.quicksum(m.x1[i,j] for j in m.J) <=  1 
 
        
-    @m.Constraint(m.I, m.J)
-    def R5_first_assignment_only_within_reach(m, i, j):
-        return m.x1[i,j]*m.t[i,j] <=  m.t_max 
+    @m.Constraint(m.I)
+    def R5_first_assignment_only_within_reach(m, i):
+        return pyo.quicksum(m.t[i,j]*m.x1[i,j] for j in m.J) <=  m.t_max
+    #m.x1[i,j]*m.t[i,j] <=  m.t_max 
       
     
     @m.Constraint(m.I)
     def R7_second_assignment(m, i):
-        return pyo.quicksum(m.x2[i,j] for j in m.J_HC) ==  1 
+        return pyo.quicksum(m.x2[i,j] for j in m.J) ==  1 
  
-    
-    @m.Constraint(m.I, m.J_HC) #If some demand point $i\in I$ has a HC as a first assignment, then such HC is also their second assignment:
+    #Todo: changed m.J_HD --> m.J
+    @m.Constraint(m.I, m.J) #If some demand point $i\in I$ has a HC as a first assignment, then such HC is also their second assignment:
     def R9_first_assignment_is_HC(m, i, j):
         return 1-m.x2[i,j] <= (1-m.y[j,'hc']) + (1-m.x1[i,j])
     
@@ -223,20 +224,18 @@ def model_mshlam_feb25(I, J, J_HP, J_HC, S, P, L, n_HF, Pi, r1, r2, d1, d2, t, n
     def R15_relation_flow_first_assignment(m, i, j, s): #f is the satisfied demand with d being the total demand, x percentage
         return m.f1[i,j,s] <= m.d1[i,s]*m.x1[i,j] #do whole d1 have to be assinged to one facility? why? we can make f percentage
     
-
     @m.Constraint(m.I, m.J, m.S)
     def R15_2_relation_flow_open_facility(m, i, j, s): #f is the satisfied demand with d being the total demand, x percentage
-        return m.f1[i,j,s] <= m.d1[i,s] * pyo.quicksum(m.a_HF[s,l] * m.y[j,l] for l in m.L) #do whole d1 have to be assinged to one facility? why? we can make f percentage
-    
+        return m.f1[i,j,s] <= pyo.quicksum(m.d1[i,s] * m.a_HF[s,l] * m.y[j,l] for l in m.L) #do whole d1 have to be assinged to one facility? why? we can make f percentage
 
     @m.Constraint(m.I, m.J, m.S)
     def R16_relation_flow_second_assignment(m, i, j, s):
         return m.f2[i,j,s] <= m.d2[i,s]*m.x2[i,j]
     
 
-    @m.Constraint(m.I, m.J, m.S)
+    @m.Constraint(m.I, m.J, m.S)       
     def R16_2_relation_flow_open_HC(m, i, j, s): #f is the satisfied demand with d being the total demand, x percentage
-        return m.f2[i,j,s] <= m.d2[i,s] * pyo.quicksum(m.a_HF[s,l] * m.y[j,l] for l in m.L) #do do whole d1 have to be assinged to one facility? why? we can make f percentage
+        return m.f2[i,j,s] <= pyo.quicksum(m.d2[i,s] * m.a_HF[s,l] * m.y[j,l] for l in m.L)#do do whole d1 have to be assinged to one facility? why? we can make f percentage
     
 
     @m.Constraint(m.J, m.S)
@@ -402,16 +401,16 @@ import pandas as pd
 rows = []
 
 for j in model.J:
-    # Determine if facility j is open by checking if any y[j,l] > 0
+    # Determine if facility j is open by checking if any y[j,l] > 0.
     facility_type = None
     for l in model.L:
         if model.y[j, l].value is not None and model.y[j, l].value > 0:
             facility_type = l
-            break  # Each location is assigned at most one type per constraint R3
+            break  # Only one type is assigned per facility.
     if facility_type is None:
-        continue  # Skip facilities that are not open
+        continue  # Skip facilities that are not open.
 
-    # Compute f1 and f2 demand per service for facility j (without aggregating them)
+    # --- Satisfied Demand: compute f1 and f2 sums per service ---
     f1_sums = {}
     f2_sums = {}
     for s in model.S:
@@ -425,7 +424,31 @@ for j in model.J:
         f1_sums[s] = f1_total
         f2_sums[s] = f2_total
 
-    # Compute available time and capacity (number of services available) per service
+    overall_f1 = sum(f1_sums[s] for s in model.S)
+    overall_f2 = sum(f2_sums[s] for s in model.S)
+    overall_satisfied = overall_f1 + overall_f2
+
+    # --- Total Demand Assigned: compute d1 and d2 sums per service ---
+    assigned_demand_d1 = {}
+    assigned_demand_d2 = {}
+    for s in model.S:
+        total_d1 = 0
+        total_d2 = 0
+        for i in model.I:
+            d1_val = model.d1[i, s] if model.d1[i, s] is not None else 0
+            d2_val = model.d2[i, s] if model.d2[i, s] is not None else 0
+            x1_val = model.x1[i, j].value if model.x1[i, j].value is not None else 0
+            x2_val = model.x2[i, j].value if model.x2[i, j].value is not None else 0
+            total_d1 += d1_val * x1_val
+            total_d2 += d2_val * x2_val
+        assigned_demand_d1[s] = total_d1
+        assigned_demand_d2[s] = total_d2
+
+    overall_d1 = sum(assigned_demand_d1[s] for s in model.S)
+    overall_d2 = sum(assigned_demand_d2[s] for s in model.S)
+    overall_assigned = overall_d1 + overall_d2
+
+    # --- Compute capacity per service (number of services available) ---
     capacity_per_service = {}
     for s in model.S:
         available_time = 0
@@ -436,16 +459,20 @@ for j in model.J:
         capacity = int(available_time / service_time) if service_time > 0 else 0
         capacity_per_service[s] = capacity
 
-    # Compute overall total satisfied demand and total capacity over all services
-    total_f1 = sum(f1_sums[s] for s in model.S)
-    total_f2 = sum(f2_sums[s] for s in model.S)
-    total_capacity = sum(capacity_per_service[s] for s in model.S)
-    
-    # Compute overall utilization as a managerial indicator
-    total_demand_value = total_f1 + total_f2
-    utilization = total_demand_value / total_capacity if total_capacity > 0 else None
+    # --- Compute Efficiency as (overall satisfied)/(overall assigned) ---
+    efficiency = overall_satisfied / overall_assigned if overall_assigned > 0 else None
 
-    # Compute maximum distance from facility j to any assigned demand point
+    # --- Compute new Utilization (Service/Personnel) ---
+    # Total service time provided = sum_{s in S} ( (f1_s + f2_s) * q[s] )
+    total_service_time = sum((f1_sums[s] + f2_sums[s]) * q[s] for s in model.S)
+    # Total personnel time = sum_{p in P} (w[j,p] * c[p])
+    total_personnel_time = 0
+    for p in model.P:
+        personnel = model.w[j, p].value if model.w[j, p].value is not None else 0
+        total_personnel_time += personnel * model.c[p]
+    new_utilization = total_service_time / total_personnel_time if total_personnel_time > 0 else None
+
+    # --- Compute maximum distance from facility j to any assigned demand point ---
     assigned_distances = []
     for i in model.I:
         if ((model.x1[i, j].value is not None and model.x1[i, j].value > 0) or 
@@ -453,20 +480,22 @@ for j in model.J:
             assigned_distances.append(model.t[i, j])
     max_distance = max(assigned_distances) if assigned_distances else 0
 
-    # Build the row; overall total satisfied demand shows as "f1_total+f2_total (total_capacity)"
+    # --- Build the row for facility j ---
     row = {
         "Facility": j,
         "Type": facility_type,
-        "Total Satisfied Demand": f"{total_f1}+{total_f2} ({total_capacity})",
-        "Utilization (%)": f"{utilization*100:.1f}%" if utilization is not None else "N/A",
+        "Satisfied Demand": f"{overall_f1},{overall_f2}",
+        "Total Demand": f"{overall_d1},{overall_d2}",
+        "Efficiency (%)": f"{efficiency*100:.1f}%" if efficiency is not None else "N/A",
+        "Utilization (Service/Personnel)": f"{new_utilization*100:.1f}%" if new_utilization is not None else "N/A",
         "Max Distance": max_distance
     }
     
-    # For each service, show satisfied demand as "f1+f2 (capacity)"
+    # For each service, show satisfied demand as "f1,f2 (Capacity)"
     for s in model.S:
-        row[f"Satisfied Demand_{s}"] = f"{f1_sums[s]}+{f2_sums[s]} ({capacity_per_service[s]})"
+        row[f"Demand_{s}"] = f"{f1_sums[s]},{f2_sums[s]} ({capacity_per_service[s]})"
     
-    # Add personnel columns, ensuring they are integers
+    # Add personnel columns (as integers)
     for p in model.P:
         personnel = model.w[j, p].value
         personnel_int = int(personnel) if personnel is not None else 0
@@ -474,38 +503,39 @@ for j in model.J:
     
     rows.append(row)
 
-# Create a DataFrame from the collected rows
+# Create a DataFrame from the collected rows.
 summary_table = pd.DataFrame(rows)
 
-# Enhance headers for managerial insight
+# --- Enhance headers for managerial insight ---
 header_mapping = {
     "Facility": "Facility ID",
     "Type": "Facility Type",
-    "Total Satisfied Demand": "Total Satisfied Demand (Total Capacity)",
-    "Utilization (%)": "Overall Utilization (%)",
+    "Satisfied Demand": "Satisfied Demand (f1,f2)",
+    "Total Demand": "Total Demand (d1,d2)",
+    "Efficiency (%)": "Efficiency (%)",
+    "Utilization (Service/Personnel)": "Utilization (Service/Personnel)",
     "Max Distance": "Max Distance"
 }
 for s in model.S:
-    header_mapping[f"Satisfied Demand_{s}"] = f"Satisfied Demand - {s.capitalize()} (Capacity)"
+    header_mapping[f"Demand_{s}"] = f"Demand - {s.capitalize()} (Capacity)"
 for p in model.P:
     header_mapping[f"Personnel_{p}"] = f"Personnel - {p.capitalize()}"
 
 summary_table.rename(columns=header_mapping, inplace=True)
 
-# Define a helper function for conditional formatting.
-# It expects strings in the format "f1+f2 (capacity)" or "number (capacity)".
+# --- Define a helper function for conditional formatting ---
 def highlight_diff(val):
     try:
-        # Remove any potential spaces and split by '('.
+        # Expecting format like "a,b (cap)" or "number (cap)"
         left, right = val.split('(')
         left = left.strip()
-        capacity = int(right.split(')')[0].strip())
-        if '+' in left:
-            f1, f2 = left.split('+')
-            demand_value = int(f1.strip()) + int(f2.strip())
+        capacity_val = int(right.split(')')[0].strip())
+        if ',' in left:
+            parts = left.split(',')
+            demand_val = sum(int(x.strip()) for x in parts)
         else:
-            demand_value = int(left)
-        diff = capacity - demand_value
+            demand_val = int(left)
+        diff = capacity_val - demand_val
         if diff < 0:
             return 'background-color: salmon'   # Demand exceeds capacity.
         elif diff > 0:
@@ -515,7 +545,7 @@ def highlight_diff(val):
     except Exception:
         return ''
 
-# Apply Pandas styling (for generating an HTML file).
+# --- Apply Pandas styling (to output as HTML) ---
 styled_table = summary_table.style.set_table_styles([
     {'selector': 'th',
      'props': [('background-color', '#4F81BD'),
@@ -525,19 +555,19 @@ styled_table = summary_table.style.set_table_styles([
                ('padding', '8px')]}
 ]).set_properties(**{'text-align': 'center', 'font-size': '11pt'})
 
-# Apply conditional formatting on demand columns.
+# Apply conditional formatting on the per-service demand columns.
 for col in summary_table.columns:
-    if "Demand - " in col or col == "Total Satisfied Demand (Total Capacity)":
+    if "Demand - " in col:
         styled_table = styled_table.map(highlight_diff, subset=[col])
 
 styled_table = styled_table.set_caption("Facility Summary Table - Managerial Insights")
 
-# Save the styled table as an HTML file (openable in any browser)
+# --- Save the styled table as an HTML file (openable in any browser) ---
 html = styled_table.to_html()
 with open("facility_summary_improved.html", "w") as f:
     f.write(html)
 print("Summary table saved as 'facility_summary_improved.html'.")
 
-# Optionally, export the raw table to CSV and Excel files:
+# Optionally, export the raw table to CSV and Excel.
 summary_table.to_csv("facility_summary_improved.csv", index=False)
 summary_table.to_excel("facility_summary_improved.xlsx", index=False)
