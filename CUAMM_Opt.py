@@ -257,6 +257,10 @@ def model_mshlam_feb25(I, J, J_HP, J_HC, S, P, L, n_HF, Pi, r1, r2, d1, d2, t, n
     def R24_allocation_workers(m, p):
         return pyo.quicksum(m.w[j,p] for j in m.J) <= m.n_W[p]
     
+    @m.Constraint(m.J, m.P)
+    def R24_2_allocation_workers(m, j, p):
+        return m.w[j,p] <= m.n_W[p] *  pyo.quicksum(m.y[j,l] for l in m.L)
+
 
     @m.Constraint(m.J, m.P)
     def R26_lower_bounds_workers(m, j, p):
@@ -276,84 +280,84 @@ print(results)
 
 #%% Plot the solution
 
-# import matplotlib.pyplot as plt
-# import geopandas as gpd
-# from shapely.geometry import LineString
+import matplotlib.pyplot as plt
+import geopandas as gpd
+from shapely.geometry import LineString
 
-# def plot_solution(model, demand_points_gdf, hfs_gdf):
-#     """
-#     Visualise the solution of the Pyomo model without location names and without the surrounding box.
+def plot_solution(model, demand_points_gdf, hfs_gdf):
+    """
+    Visualise the solution of the Pyomo model without location names and without the surrounding box.
     
-#     Parameters:
-#         model: Solved Pyomo model
-#         demand_points_gdf: GeoDataFrame with demand points (geometry and labels)
-#         hfs_gdf: GeoDataFrame with potential locations for health posts (HP) and health centres (HC) (geometry and labels)
-#     """
-#     fig, ax = plt.subplots(figsize=(10, 10))
+    Parameters:
+        model: Solved Pyomo model
+        demand_points_gdf: GeoDataFrame with demand points (geometry and labels)
+        hfs_gdf: GeoDataFrame with potential locations for health posts (HP) and health centres (HC) (geometry and labels)
+    """
+    fig, ax = plt.subplots(figsize=(10, 10))
 
-#     # Plot demand points (without names)
-#     demand_points_gdf.plot(ax=ax, color='blue', markersize=50)
+    # Plot demand points (without names)
+    demand_points_gdf.plot(ax=ax, color='blue', markersize=50)
 
-#     # Plot HPs (triangles) and HCs (squares) without labels
-#     hps_gdf = hfs_gdf[hfs_gdf['label'].isin(model.J_HP)]
-#     hcs_gdf = hfs_gdf[hfs_gdf['label'].isin(model.J_HC)]
-#     hps_gdf.plot(ax=ax, color='green', marker='^', markersize=80)
-#     hcs_gdf.plot(ax=ax, color='orange', marker='s', markersize=80)
+    # Plot HPs (triangles) and HCs (squares) without labels
+    hps_gdf = hfs_gdf[hfs_gdf['label'].isin(model.J_HP)]
+    hcs_gdf = hfs_gdf[hfs_gdf['label'].isin(model.J_HC)]
+    hps_gdf.plot(ax=ax, color='green', marker='^', markersize=80)
+    hcs_gdf.plot(ax=ax, color='orange', marker='s', markersize=80)
 
-#     # Plot assignments with arrows
-#     for i in model.I:
-#         for j in model.J:
-#             if model.x1[i, j].value > 0 or model.x2[i, j].value > 0:
-#                 # Get coordinates for the demand point and facility
-#                 dp_coords = demand_points_gdf.loc[demand_points_gdf['label'] == i, 'geometry'].values[0]
-#                 hf_coords = hfs_gdf.loc[hfs_gdf['label'] == j, 'geometry'].values[0]
+    # Plot assignments with arrows
+    for i in model.I:
+        for j in model.J:
+            if model.x1[i, j].value > 0 or model.x2[i, j].value > 0:
+                # Get coordinates for the demand point and facility
+                dp_coords = demand_points_gdf.loc[demand_points_gdf['label'] == i, 'geometry'].values[0]
+                hf_coords = hfs_gdf.loc[hfs_gdf['label'] == j, 'geometry'].values[0]
 
-#                 # Determine arrow colour
-#                 if model.x1[i, j].value > 0 and model.x2[i, j].value > 0:
-#                     arrow_color = 'black'
-#                     linewidth = 2
-#                 elif model.x1[i, j].value > 0:
-#                     arrow_color = 'yellow'
-#                     linewidth = 1
-#                 elif model.x2[i, j].value > 0:
-#                     arrow_color = 'red'
-#                     linewidth = 1
+                # Determine arrow colour
+                if model.x1[i, j].value > 0 and model.x2[i, j].value > 0:
+                    arrow_color = 'black'
+                    linewidth = 2
+                elif model.x1[i, j].value > 0:
+                    arrow_color = 'yellow'
+                    linewidth = 1
+                elif model.x2[i, j].value > 0:
+                    arrow_color = 'red'
+                    linewidth = 1
 
-#                 ax.annotate(
-#                     '', xy=(hf_coords.x, hf_coords.y), xytext=(dp_coords.x, dp_coords.y),
-#                     arrowprops=dict(arrowstyle='->', color=arrow_color, lw=linewidth),
-#                     zorder=1
-#                 )
+                ax.annotate(
+                    '', xy=(hf_coords.x, hf_coords.y), xytext=(dp_coords.x, dp_coords.y),
+                    arrowprops=dict(arrowstyle='->', color=arrow_color, lw=linewidth),
+                    zorder=1
+                )
 
-#     # Add information text for each facility (demand and workers), without the facility name
-#     for j in model.J:
-#         assigned_demand_points = sum(model.x1[i, j].value > 0 or model.x2[i, j].value > 0 for i in model.I)
-#         workers = {p: model.w[j, p].value for p in model.P}
-#         status = "Open" if sum(model.y[j, l].value for l in model.L) > 0 else "Closed"
-#         hf_coords = hfs_gdf.loc[hfs_gdf['label'] == j, 'geometry'].values[0]
-#         ax.text(
-#             hf_coords.x + 0.1, hf_coords.y,
-#             f"{status}\nDemand: {assigned_demand_points}\nWorkers: {workers}",
-#             fontsize=8, color='black'
-#         )
+    # Add information text for each facility (demand and workers), without the facility name
+    for j in model.J:
+        assigned_demand_points = sum(model.x1[i, j].value > 0 or model.x2[i, j].value > 0 for i in model.I)
+        workers = {p: model.w[j, p].value for p in model.P}
+        status = "Open" if sum(model.y[j, l].value for l in model.L) > 0 else "Closed"
+        hf_coords = hfs_gdf.loc[hfs_gdf['label'] == j, 'geometry'].values[0]
+        ax.text(
+            hf_coords.x + 0.1, hf_coords.y,
+            f"{status}\nDemand: {assigned_demand_points}\nWorkers: {workers}",
+            fontsize=8, color='black'
+        )
 
-#     # Add information text for each demand point (flows), without the demand point name
-#     for i in model.I:
-#         f1_sum = sum(model.f1[i, j, s].value for j in model.J for s in model.S)
-#         f2_sum = sum(model.f2[i, j, s].value for j in model.J for s in model.S)
-#         total_demand = sum(model.d1[i, s] + model.d2[i, s] for s in model.S)
-#         dp_coords = demand_points_gdf.loc[demand_points_gdf['label'] == i, 'geometry'].values[0]
-#         ax.text(
-#             dp_coords.x + 0.1, dp_coords.y,
-#             f"f': {f1_sum}\nf'': {f2_sum}\nTotal: {total_demand}",
-#             fontsize=8, color='blue'
-#         )
+    # Add information text for each demand point (flows), without the demand point name
+    for i in model.I:
+        f1_sum = sum(model.f1[i, j, s].value for j in model.J for s in model.S)
+        f2_sum = sum(model.f2[i, j, s].value for j in model.J for s in model.S)
+        total_demand = sum(model.d1[i, s] + model.d2[i, s] for s in model.S)
+        dp_coords = demand_points_gdf.loc[demand_points_gdf['label'] == i, 'geometry'].values[0]
+        ax.text(
+            dp_coords.x + 0.1, dp_coords.y,
+            f"f': {f1_sum}\nf'': {f2_sum}\nTotal: {total_demand}",
+            fontsize=8, color='blue'
+        )
 
-#     # Remove the axes (box) for a cleaner look
-#     ax.set_axis_off()
+    # Remove the axes (box) for a cleaner look
+    ax.set_axis_off()
 
-#     plt.title("Model Solution: Demand and Facility Assignments")
-#     plt.show()
+    plt.title("Model Solution: Demand and Facility Assignments")
+    plt.show()
 
 
 # # Example usage:
