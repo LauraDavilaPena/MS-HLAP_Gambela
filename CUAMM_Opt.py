@@ -575,3 +575,117 @@ print("Summary table saved as 'facility_summary_improved.html'.")
 # Optionally, export the raw table to CSV and Excel.
 summary_table.to_csv("facility_summary_improved.csv", index=False)
 summary_table.to_excel("facility_summary_improved.xlsx", index=False)
+
+
+
+# Plot solution (choosing between first assignment arrows, second assignment arrows, or both)
+
+def plot_solution_v1(model, demand_points_gdf, hfs_gdf, show_first_assignment=False, show_second_assignment=False):
+    # Extract open facilities from the model
+    open_facilities = {
+        j: l
+        for (j, l) in model.y.keys()
+        if pyo.value(model.y[j, l]) > 0  # Only keep open facilities
+    }
+
+    # Open facilities GeoDataFrame
+    open_hfs_gdf = hfs_gdf[hfs_gdf['label'].isin(open_facilities.keys())].copy()
+
+
+    # Add a column for facility type (HP or HC) based on l
+    open_hfs_gdf['facility_type'] = open_hfs_gdf['label'].map(open_facilities)
+
+
+    # Extract first assignments from the model
+    assignments1 = {
+        (i, j): pyo.value(model.x1[i, j])
+        for (i, j) in model.x1.keys()
+        if pyo.value(model.x1[i, j]) > 0  # Only keep active first assignments
+    }
+
+    # Extract second assignments from the model
+    assignments2 = {
+        (i, j): pyo.value(model.x2[i, j])
+        for (i, j) in model.x2.keys()
+        if pyo.value(model.x2[i, j]) > 0  # Only keep active second assignments
+    }
+
+    # Create a list of connections (coordinates) for first assignment
+    connections1 = [
+        (
+            demand_points_gdf.loc[demand_points_gdf['label'] == i, 'geometry'].values[0],  # Demand point coords
+            hfs_gdf.loc[hfs_gdf['label'] == j, 'geometry'].values[0]  # Facility coords
+        )
+        for (i, j) in assignments1.keys()
+    ]
+
+    # Create a list of connections (coordinates) for second assignment
+    connections2 = [
+        (
+            demand_points_gdf.loc[demand_points_gdf['label'] == i, 'geometry'].values[0],  # Demand point coords
+            hfs_gdf.loc[hfs_gdf['label'] == j, 'geometry'].values[0]  # Facility coords
+        )
+        for (i, j) in assignments2.keys()
+    ]
+
+
+    fig, ax = plt.subplots(figsize=(5,5))
+
+    # Plot the grid and demand points
+    demand_points_gdf.plot(ax=ax, color='red', label='Demand points')
+
+    # Add labels for demand points
+    for idx, row in demand_points_gdf.iterrows():
+        ax.text(row.geometry.x + 0.05, row.geometry.y + 0.05, row['label'], fontsize=8, color='red')
+
+
+    # Plot open HPs and HCs separately, only if they are not empty
+
+    hps_open_gdf = open_hfs_gdf[open_hfs_gdf['facility_type'] == 'hp']
+    hcs_open_gdf = open_hfs_gdf[open_hfs_gdf['facility_type'] == 'hc']
+
+    if not hps_open_gdf.empty:
+        hps_open_gdf.plot(ax=ax, color='blue', marker='^', label='HPs')
+
+    if not hcs_open_gdf.empty:
+        hcs_open_gdf.plot(ax=ax, color='black', marker='s', label='HCs')
+
+    # Add labels for open facilities
+    for idx, row in open_hfs_gdf.iterrows():
+        ax.text(row.geometry.x + 0.05, row.geometry.y + 0.05, row['label'], fontsize=8, color='black')
+
+    
+    # Conditionally add first assignment arrows
+    if show_first_assignment:
+        for (start, end) in connections1:
+            ax.annotate(
+                '', xy=(end.x, end.y), xytext=(start.x, start.y),
+                arrowprops=dict(arrowstyle='->', color='gray', lw=1),
+                zorder=1
+            )
+
+    # Conditionally add second assignment arrows
+    if show_second_assignment:
+        for (start, end) in connections2:
+            ax.annotate(
+                '', xy=(end.x, end.y), xytext=(start.x, start.y),
+                arrowprops=dict(arrowstyle='->', color='orange', lw=1),
+                zorder=1
+            )
+
+    # Set axis limits based on your grid dimensions (6x6)
+    ax.set_xlim(-0.5, 6.5)
+    ax.set_ylim(-0.5, 6.5)
+
+    # Add gridlines at every 0.5 unit
+    ax.set_xticks([x * 0.5 for x in range(13)])  # From 0 to 6 with a step of 0.5
+    ax.set_yticks([y * 0.5 for y in range(13)])
+    ax.grid(color='lightgray', linestyle='--', linewidth=0.5)
+
+    # Add legend and show plot
+    ax.legend()
+    #plt.title("Location-Allocation Solution with Grid")
+
+    plt.show()
+
+plot_solution_v1(model, demand_points_gdf, hfs_gdf, show_first_assignment=False, show_second_assignment=True)

@@ -81,7 +81,7 @@ distance_matrix_df.loc['dp3','hc1']
 """
 
 # Number of health workers of each type to allocate
-workers_to_allocate = [50, 90, 90]
+workers_to_allocate = [1, 2, 2]
 
 # Lower bounds on the number of workers per HF-type
 lb_workers = np.array([
@@ -123,7 +123,7 @@ a_W = {(health_workers[p],services[s]): services_per_worker_df.iloc[p, s]
 
 
 # Maximum coverage distance for first assignment
-t1max = 20
+t1max = 4
 
 # Service time
 service_time = [0.5, 1, 2]
