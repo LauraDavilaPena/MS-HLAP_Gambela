@@ -71,7 +71,7 @@ health_workers = ['doctor','nurse','midwife']
 levels = ['hp', 'hc']
 
 # HFs to locate (at most)
-HFs_to_locate = [4,2]
+HFs_to_locate = [2,3]
 
 # Distance matrix
 distance_matrix = pd.read_excel('distance_matrix_ij.xlsx', index_col=0)
@@ -81,7 +81,7 @@ distance_matrix_df.loc['dp3','hc1']
 """
 
 # Number of health workers of each type to allocate
-workers_to_allocate = [1, 2, 2]
+workers_to_allocate = [3, 8, 8]
 
 # Lower bounds on the number of workers per HF-type
 lb_workers = np.array([
@@ -123,7 +123,7 @@ a_W = {(health_workers[p],services[s]): services_per_worker_df.iloc[p, s]
 
 
 # Maximum coverage distance for first assignment
-t1max = 4
+t1max = 3.5
 
 # Service time
 service_time = [0.5, 1, 2]
@@ -134,14 +134,15 @@ working_hours = [7, 8, 8]
 
 
 ########### Included on Feb 19 for the new model (test.tex) ###########
-total_population = {(key): 10000 for key in dps}
+total_population = {(key): 16045 for key in dps}
 
 # Demand rate per types of services during opening hours (oh)
 demand_rate_opening_hours = np.array([
-    [0.001] * len(dps), # basic
-    [0.002] * len(dps), # maternal1
-    [0.003] * len(dps), # maternal2
+    [0.00835] * len(dps), # basic
+    [0.00162] * len(dps), # maternal1
+    [0.00010] * len(dps), # maternal2
 ])
+
 
 demand_rate_opening_hours_df = pd.DataFrame(demand_rate_opening_hours, index=services)
 demand_rate_opening_hours_df = demand_rate_opening_hours_df.T
@@ -154,10 +155,11 @@ dd_oh = {(key): int(round(total_population[i] * dr_oh[key])) for i in dps for ke
 
 # Demand rate per types of services outside opening hours (closing hours ---> ch)
 demand_rate_closing_hours = np.array([
-    [0.001] * len(dps), # basic
-    [0.002] * len(dps), # maternal1
-    [0.003] * len(dps), # maternal2
+    [0.03478] * len(dps), # basic
+    [0.00175] * len(dps), # maternal1
+    [0.00069] * len(dps), # maternal2
 ])
+
 
 demand_rate_closing_hours_df = pd.DataFrame(demand_rate_closing_hours, index=services)
 demand_rate_closing_hours_df = demand_rate_closing_hours_df.T
