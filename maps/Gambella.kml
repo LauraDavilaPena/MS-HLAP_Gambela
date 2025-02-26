@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>Gambella</name>
+	<gx:CascadingStyle kml:id="__managed_style_177B10505132825B3310">
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/rpc/cc/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>2.66667</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_0AC412942F32825B3310">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_177B10505132825B3310</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_2EEC6B822C32825B3310</styleUrl>
+		</Pair>
+	</StyleMap>
+	<gx:CascadingStyle kml:id="__managed_style_25C553E8D732824AF7ED">
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/rpc/cc/icon?color=fbc02d&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>4</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<gx:displayMode>card</gx:displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_2EEC6B822C32825B3310">
+		<Style>
+			<IconStyle>
+				<scale>1.2</scale>
+				<Icon>
+					<href>https://earth.google.com/earth/rpc/cc/icon?color=1976d2&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>4</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<displayMode>hide</displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<gx:CascadingStyle kml:id="__managed_style_17E649EBE732824AF7ED">
+		<Style>
+			<IconStyle>
+				<Icon>
+					<href>https://earth.google.com/earth/rpc/cc/icon?color=fbc02d&amp;id=2000&amp;scale=4</href>
+				</Icon>
+				<hotSpot x="64" y="128" xunits="pixels" yunits="insetPixels"/>
+			</IconStyle>
+			<LabelStyle>
+			</LabelStyle>
+			<LineStyle>
+				<color>ff2dc0fb</color>
+				<width>2.66667</width>
+			</LineStyle>
+			<PolyStyle>
+				<color>40ffffff</color>
+			</PolyStyle>
+			<BalloonStyle>
+				<gx:displayMode>card</gx:displayMode>
+			</BalloonStyle>
+		</Style>
+	</gx:CascadingStyle>
+	<StyleMap id="__managed_style_063F11095C32824AF7ED">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#__managed_style_17E649EBE732824AF7ED</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#__managed_style_25C553E8D732824AF7ED</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Placemark id="0E586F8C1432824AF7DE">
+		<name>Gambela Hospital</name>
+		<gx:mid>/g/1tgttj3x</gx:mid>
+		<gx:fid>0x17aa81551ac492d5:0xafdd410ab7386a19</gx:fid>
+		<LookAt>
+			<longitude>34.580385</longitude>
+			<latitude>8.242747699999999</latitude>
+			<altitude>0</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>1044.332806623301</range>
+			<altitudeMode>relativeToGround</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_063F11095C32824AF7ED</styleUrl>
+		<Point>
+			<altitudeMode>relativeToGround</altitudeMode>
+			<coordinates>34.580385,8.242747699999999,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark id="06ED7CE82832825B330E">
+		<name>Nguenyyiel</name>
+		<LookAt>
+			<longitude>34.31543580601142</longitude>
+			<latitude>8.330316148044238</latitude>
+			<altitude>479.0829373796775</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>8353.31732005463</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0AC412942F32825B3310</styleUrl>
+		<Polygon>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						34.30776929358135,8.33140913851795,0 34.30023117638632,8.328578051182166,0 34.30347960713867,8.324583635252704,0 34.30551825804014,8.325581128989581,0 34.30934577336832,8.322532932908508,0 34.31151280022296,8.311442085098962,0 34.32020031990924,8.306018345642137,0 34.33354243332698,8.287958126754953,0 34.34278048201624,8.296610880654866,0 34.34033498956893,8.301486978799181,0 34.3265421306079,8.306533338636164,0 34.3315310284265,8.311453949281509,0 34.32838288761812,8.320373756691687,0 34.31855715941469,8.329944380397203,0 34.30776929358135,8.33140913851795,0 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark id="0CF14C5E30328263F245">
+		<name>Kule</name>
+		<LookAt>
+			<longitude>34.25538412884956</longitude>
+			<latitude>8.310867765026028</latitude>
+			<altitude>443.1736960428771</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>10409.52490782598</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0AC412942F32825B3310</styleUrl>
+		<Polygon>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						34.25668100196176,8.305851033084611,0 34.24329068067994,8.305921544472318,0 34.23008939285245,8.30656859875188,0 34.22802130678589,8.303428352549767,0 34.23815016076014,8.302567090633776,0 34.2464222328416,8.299653195746849,0 34.25467555920196,8.293405590157834,0 34.24913458798981,8.283434173307544,0 34.24161507624289,8.276399134285613,0 34.2439266097232,8.271410611869737,0 34.2512041622347,8.268701485648894,0 34.25113207210328,8.276188327803778,0 34.25941804910843,8.280751780598406,0 34.26453218473563,8.295933976945589,0 34.26172145588638,8.304489943293525,0 34.25668100196176,8.305851033084611,0 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark id="0E2A78BC34328264CBC9">
+		<name>Tierkidi</name>
+		<LookAt>
+			<longitude>34.28007201933945</longitude>
+			<latitude>8.271648139160449</latitude>
+			<altitude>478.3727680424362</altitude>
+			<heading>-76.81244252577621</heading>
+			<tilt>2.306350085037661</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>5156.67431244452</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0AC412942F32825B3310</styleUrl>
+		<Polygon>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						34.28041515156833,8.283508838535154,0 34.26882645656033,8.271112923047253,0 34.26982895566665,8.260834372302465,0 34.28194377908453,8.251543033032636,0 34.28606837223067,8.257359080249195,0 34.27834814189521,8.262545222344041,0 34.27631956938104,8.269833798645077,0 34.2785440899714,8.273319470918349,0 34.2873995264258,8.268473807449118,0 34.28995769703712,8.269333433211642,0 34.28811588134896,8.275892895972119,0 34.29113247285112,8.277919808568381,0 34.29755654687425,8.273587638241427,0 34.29909369618253,8.271155543511211,0 34.3022147908361,8.273569267782136,0 34.29523875369982,8.280261646878575,0 34.29058452398903,8.282250131041508,0 34.28581064439356,8.277404047056542,0 34.28041515156833,8.283508838535154,0 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark id="0AF56F786932826DCA78">
+		<name>Jewi</name>
+		<LookAt>
+			<longitude>34.72136273921471</longitude>
+			<latitude>8.142610129413711</latitude>
+			<altitude>512.4282542933589</altitude>
+			<heading>8.056031266298268</heading>
+			<tilt>0.1355340877925528</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>5396.530202599825</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0AC412942F32825B3310</styleUrl>
+		<Polygon>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						34.72049704747987,8.150020462705296,0 34.7221053030118,8.136752462491168,0 34.71847791803471,8.13962456957978,0 34.71214576126953,8.139474212640959,0 34.71698527503543,8.129200518622996,0 34.72694343219962,8.126244339325298,0 34.73252296638338,8.127387371442788,0 34.73756415838528,8.129235733836193,0 34.73979844886451,8.135825593847082,0 34.73369799262213,8.139618155699235,0 34.72695831747615,8.144132279852995,0 34.72049704747987,8.150020462705296,0 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark id="0A29C757A93282718C04">
+		<name>Pinyudo 2</name>
+		<LookAt>
+			<longitude>34.41591411327737</longitude>
+			<latitude>7.742948463366717</latitude>
+			<altitude>500.6260752268255</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>79373.70564409532</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0AC412942F32825B3310</styleUrl>
+		<Polygon>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						34.42645202296403,7.751248709701754,0 34.42462603728737,7.74996667071548,0 34.42685503078864,7.748028756015734,0 34.42873653730961,7.747605369609993,0 34.43078934235424,7.749067848850808,0 34.43162357826989,7.751102145255039,0 34.42844373101543,7.753128429239586,0 34.42645202296403,7.751248709701754,0 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark id="0709591A903282722140">
+		<name>Pinyudo</name>
+		<LookAt>
+			<longitude>34.15192600426444</longitude>
+			<latitude>7.922806425936855</latitude>
+			<altitude>429.1488071502558</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>5931.965381870396</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0AC412942F32825B3310</styleUrl>
+		<Polygon>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						34.1490138846239,7.931154535156676,0 34.13649548138461,7.926891112077849,0 34.14133944331538,7.911812468389702,0 34.15865532301167,7.911975326537693,0 34.16410810668146,7.92355782116041,0 34.16242586799248,7.930869920411426,0 34.1490138846239,7.931154535156676,0 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+	<Placemark id="03392776733282732F43">
+		<name>Okugo</name>
+		<LookAt>
+			<longitude>35.13365044139248</longitude>
+			<latitude>6.446073540868119</latitude>
+			<altitude>663.2374851051333</altitude>
+			<heading>0</heading>
+			<tilt>0</tilt>
+			<gx:fovy>35</gx:fovy>
+			<range>1648.331531812437</range>
+			<altitudeMode>absolute</altitudeMode>
+		</LookAt>
+		<styleUrl>#__managed_style_0AC412942F32825B3310</styleUrl>
+		<Polygon>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						35.13326353055195,6.446768970258852,0 35.13096701436401,6.445851328610829,0 35.13163513997731,6.443519121667969,0 35.13453639337409,6.443855721373628,0 35.13548105565145,6.445663691860366,0 35.13326353055195,6.446768970258852,0 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+</Document>
+</kml>

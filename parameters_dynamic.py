@@ -8,6 +8,12 @@ import sys, trace
 import matplotlib.pyplot as plt
 from scenarios import scenarios  # Import scenario configurations
 
+
+# Select Scenario
+scenario_name = "baseline"  # Change this to switch scenarios
+params = scenarios[scenario_name]  # Load selected scenario parameters
+
+
 # Load the GeoJSON file
 location_nodes = gdp.read_file("location_nodes.geojson")
 
@@ -46,10 +52,6 @@ services = ['basic','maternal1','maternal2']
 health_workers = ['doctor','nurse','midwife']
 levels = ['hp', 'hc']
 
-
-# Select Scenario
-scenario_name = "high_demand"  # Change this to switch scenarios
-params = scenarios[scenario_name]  # Load selected scenario parameters
 
 
 # Assign scenario parameters
