@@ -1,6 +1,6 @@
 {
     "type": "FeatureCollection",
-    "name": "location_refcamps",
+    "name": "location_refcamps2",
     "features": [
         {
             "type": "Feature",
@@ -486,7 +486,7 @@
             "type": "Feature", 
             "properties": { 
                 "Name": "HC_CandidateLocation4",
-				"Camp": "Pinyudo",
+				"Camp": "Kule",
                 "type_f": "HC", 
                 "id": "hc4" 
             }, 

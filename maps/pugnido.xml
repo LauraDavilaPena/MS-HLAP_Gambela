@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="openstreetmap-cgimap 2.0.1 (3942595 spike-08.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <way id="309213991" visible="true" version="10" changeset="112535398" timestamp="2021-10-15T09:50:34Z" user="eliotsotty" uid="13507962">
+  <nd ref="8863250914"/>
+  <nd ref="8863324720"/>
+  <nd ref="8863324721"/>
+  <nd ref="8951907750"/>
+  <nd ref="8863324725"/>
+  <nd ref="8951907820"/>
+  <nd ref="8863324722"/>
+  <nd ref="8863324723"/>
+  <nd ref="3145409307"/>
+  <nd ref="8863324724"/>
+  <nd ref="3145409308"/>
+  <nd ref="8387623278"/>
+  <nd ref="3145409309"/>
+  <nd ref="9174185618"/>
+  <nd ref="8863324733"/>
+  <nd ref="3145409292"/>
+  <nd ref="3145409296"/>
+  <nd ref="8863324732"/>
+  <nd ref="8863324731"/>
+  <nd ref="8863324730"/>
+  <nd ref="8387623282"/>
+  <nd ref="8863324729"/>
+  <nd ref="8387623280"/>
+  <nd ref="8863324728"/>
+  <nd ref="8863324727"/>
+  <nd ref="8863324726"/>
+  <nd ref="8863250913"/>
+  <nd ref="8387623300"/>
+  <nd ref="8863250912"/>
+  <nd ref="8387623279"/>
+  <nd ref="8863250911"/>
+  <nd ref="8387623301"/>
+  <nd ref="8863324718"/>
+  <nd ref="8387623302"/>
+  <nd ref="8863324719"/>
+  <nd ref="8387623303"/>
+  <nd ref="8387623304"/>
+  <nd ref="8387623283"/>
+  <nd ref="4319533238"/>
+  <nd ref="4319533239"/>
+  <nd ref="4319533240"/>
+  <nd ref="4319533241"/>
+  <nd ref="4319533242"/>
+  <nd ref="4319533243"/>
+  <nd ref="4319533244"/>
+  <nd ref="4319533245"/>
+  <nd ref="4319533246"/>
+  <nd ref="4319533247"/>
+  <nd ref="8387623284"/>
+  <nd ref="4319533248"/>
+  <nd ref="4319533249"/>
+  <nd ref="4319533250"/>
+  <nd ref="4319533251"/>
+  <nd ref="4319533252"/>
+  <nd ref="4319533253"/>
+  <nd ref="4319533254"/>
+  <nd ref="4319533255"/>
+  <nd ref="4319533256"/>
+  <nd ref="4319533257"/>
+  <nd ref="4319533258"/>
+  <nd ref="4319533259"/>
+  <nd ref="4319533260"/>
+  <nd ref="4319533261"/>
+  <nd ref="4319533262"/>
+  <nd ref="4319533263"/>
+  <nd ref="4319533264"/>
+  <nd ref="4319533265"/>
+  <nd ref="4319533266"/>
+  <nd ref="8387623305"/>
+  <nd ref="8387623287"/>
+  <nd ref="8387623291"/>
+  <nd ref="8387623292"/>
+  <nd ref="8863250910"/>
+  <nd ref="8863324717"/>
+  <nd ref="8863250916"/>
+  <nd ref="8387623298"/>
+  <nd ref="8863250915"/>
+  <nd ref="8863250914"/>
+  <tag k="amenity" v="refugee_site"/>
+  <tag k="landuse" v="residential"/>
+  <tag k="name" v="Pugnido"/>
+ </way>
+</osm>

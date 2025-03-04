@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<osm version="0.6" generator="openstreetmap-cgimap 2.0.1 (3288097 spike-08.openstreetmap.org)" copyright="OpenStreetMap and contributors" attribution="http://www.openstreetmap.org/copyright" license="http://opendatacommons.org/licenses/odbl/1-0/">
+ <way id="945024347" visible="true" version="1" changeset="105011915" timestamp="2021-05-20T08:34:44Z" user="ManonVi" uid="8177354">
+  <nd ref="8748880303"/>
+  <nd ref="8748880302"/>
+  <nd ref="8748880301"/>
+  <nd ref="8748880300"/>
+  <nd ref="8748880299"/>
+  <nd ref="8748880298"/>
+  <nd ref="8748880297"/>
+  <nd ref="8748880296"/>
+  <nd ref="8748880295"/>
+  <nd ref="8748880294"/>
+  <nd ref="8748880293"/>
+  <nd ref="8748880292"/>
+  <nd ref="8748880291"/>
+  <nd ref="8748880255"/>
+  <nd ref="8748880254"/>
+  <nd ref="8748880253"/>
+  <nd ref="8748880290"/>
+  <nd ref="8748880289"/>
+  <nd ref="8748880288"/>
+  <nd ref="8748880287"/>
+  <nd ref="8748880286"/>
+  <nd ref="8748880285"/>
+  <nd ref="8748880284"/>
+  <nd ref="8748880283"/>
+  <nd ref="8748880282"/>
+  <nd ref="8748880281"/>
+  <nd ref="8748880280"/>
+  <nd ref="8748880279"/>
+  <nd ref="8748880278"/>
+  <nd ref="8748880277"/>
+  <nd ref="8748880276"/>
+  <nd ref="8748880275"/>
+  <nd ref="8748880274"/>
+  <nd ref="8748880273"/>
+  <nd ref="8748880272"/>
+  <nd ref="8748880271"/>
+  <nd ref="8748880270"/>
+  <nd ref="8748880269"/>
+  <nd ref="8748880268"/>
+  <nd ref="8748880267"/>
+  <nd ref="8748880266"/>
+  <nd ref="8748880265"/>
+  <nd ref="8748880264"/>
+  <nd ref="8748880263"/>
+  <nd ref="8748880262"/>
+  <nd ref="8748880261"/>
+  <nd ref="8748880260"/>
+  <nd ref="8748880259"/>
+  <nd ref="8748880258"/>
+  <nd ref="8748880257"/>
+  <nd ref="8748880256"/>
+  <nd ref="8748880303"/>
+  <tag k="amenity" v="refugee_site"/>
+  <tag k="name" v="Tierkidi"/>
+  <tag k="population" v="70000"/>
+ </way>
+</osm>
