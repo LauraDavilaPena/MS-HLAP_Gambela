@@ -6,7 +6,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Nguenyyiel 1",
-				"Camp": "Nguenyyiel",
+                "Camp": "Nguenyyiel",
                 "type_f": "demand_point",
                 "id": "dp1"
             },
@@ -22,7 +22,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Nguenyyiel 2",
-				"Camp": "Nguenyyiel",
+                "Camp": "Nguenyyiel",
                 "type_f": "demand_point",
                 "id": "dp2"
             },
@@ -38,7 +38,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Nguenyyiel 3",
-				"Camp": "Nguenyyiel",
+                "Camp": "Nguenyyiel",
                 "type_f": "demand_point",
                 "id": "dp3"
             },
@@ -54,7 +54,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Nguenyyiel 4",
-				"Camp": "Nguenyyiel",
+                "Camp": "Nguenyyiel",
                 "type_f": "demand_point",
                 "id": "dp4"
             },
@@ -70,7 +70,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Nguenyyiel 5",
-				"Camp": "Nguenyyiel",
+                "Camp": "Nguenyyiel",
                 "type_f": "demand_point",
                 "id": "dp5"
             },
@@ -86,7 +86,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Kule 1",
-				"Camp": "Kule",
+                "Camp": "Kule",
                 "type_f": "demand_point",
                 "id": "dp6"
             },
@@ -102,7 +102,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Kule 2",
-				"Camp": "Kule",
+                "Camp": "Kule",
                 "type_f": "demand_point",
                 "id": "dp7"
             },
@@ -118,7 +118,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Kule 3",
-				"Camp": "Kule",
+                "Camp": "Kule",
                 "type_f": "demand_point",
                 "id": "dp8"
             },
@@ -134,7 +134,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Tierkidi 1",
-				"Camp": "Tierkidi",
+                "Camp": "Tierkidi",
                 "type_f": "demand_point",
                 "id": "dp9"
             },
@@ -150,7 +150,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Tierkidi 2",
-				"Camp": "Tierkidi",
+                "Camp": "Tierkidi",
                 "type_f": "demand_point",
                 "id": "dp10"
             },
@@ -166,7 +166,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Tierkidi 3",
-				"Camp": "Tierkidi",
+                "Camp": "Tierkidi",
                 "type_f": "demand_point",
                 "id": "dp11"
             },
@@ -182,7 +182,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Tierkidi 4",
-				"Camp": "Tierkidi",
+                "Camp": "Tierkidi",
                 "type_f": "demand_point",
                 "id": "dp12"
             },
@@ -198,7 +198,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Jewi 1",
-				"Camp": "Jewi",
+                "Camp": "Jewi",
                 "type_f": "demand_point",
                 "id": "dp13"
             },
@@ -214,7 +214,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Jewi 2",
-				"Camp": "Jewi",
+                "Camp": "Jewi",
                 "type_f": "demand_point",
                 "id": "dp14"
             },
@@ -230,7 +230,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Jewi 3",
-				"Camp": "Jewi",
+                "Camp": "Jewi",
                 "type_f": "demand_point",
                 "id": "dp15"
             },
@@ -246,7 +246,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Pinyudo-II 1",
-				"Camp": "Pinyudo-II",
+                "Camp": "Pinyudo-II",
                 "type_f": "demand_point",
                 "id": "dp16"
             },
@@ -262,7 +262,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Pinyudo 1",
-				"Camp": "Pinyudo",
+                "Camp": "Pinyudo",
                 "type_f": "demand_point",
                 "id": "dp17"
             },
@@ -278,7 +278,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Pinyudo 2",
-				"Camp": "Pinyudo",
+                "Camp": "Pinyudo",
                 "type_f": "demand_point",
                 "id": "dp18"
             },
@@ -294,7 +294,7 @@
             "type": "Feature",
             "properties": {
                 "Name": "Pinyudo 3",
-				"Camp": "Pinyudo",
+                "Camp": "Pinyudo",
                 "type_f": "demand_point",
                 "id": "dp19"
             },
@@ -306,230 +306,229 @@
                 ]
             }
         },
-        { 
-            "type": "Feature", 
-            "properties": { 
+        {
+            "type": "Feature",
+            "properties": {
                 "Name": "HP_CandidateLocation1",
-				"Camp": "Kule",
-                "type_f": "HP", 
-                "id": "hp1" 
-            }, 
-            "geometry": { 
-                "type": "Point", 
-                "coordinates": [ 
+                "Camp": "Kule",
+                "type_f": "HP",
+                "id": "hp1"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
                     34.251172,
-                    8.298461	
-                ] 
-            } 
+                    8.298461
+                ]
+            }
         },
-        { 
-            "type": "Feature", 
-            "properties": { 
+        {
+            "type": "Feature",
+            "properties": {
                 "Name": "HP_CandidateLocation2",
-				"Camp": "Jewi",
-                "type_f": "HP", 
-                "id": "hp2" 
-            }, 
-            "geometry": { 
-                "type": "Point", 
-                "coordinates": [ 
+                "Camp": "Jewi",
+                "type_f": "HP",
+                "id": "hp2"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
                     34.725020,
                     8.142850
-                ] 
-            } 
+                ]
+            }
         },
-        { 
-            "type": "Feature", 
-            "properties": { 
+        {
+            "type": "Feature",
+            "properties": {
                 "Name": "HP_CandidateLocation3",
-				"Camp": "Tierkidi",
-                "type_f": "HP", 
-                "id": "hp3" 
-            }, 
-            "geometry": { 
-                "type": "Point", 
-                "coordinates": [ 
+                "Camp": "Tierkidi",
+                "type_f": "HP",
+                "id": "hp3"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
                     34.272452,
                     8.269051
-                ] 
-            } 
+                ]
+            }
         },
-        { 
-            "type": "Feature", 
-            "properties": { 
+        {
+            "type": "Feature",
+            "properties": {
                 "Name": "HP_CandidateLocation4",
-				"Camp": "Nguenyyiel",
-                "type_f": "HP", 
-                "id": "hp4" 
-            }, 
-            "geometry": { 
-                "type": "Point", 
-                "coordinates": [ 
+                "Camp": "Nguenyyiel",
+                "type_f": "HP",
+                "id": "hp4"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
                     34.3184547,
                     8.3153804
-                ] 
-            } 
+                ]
+            }
         },
-        { 
-            "type": "Feature", 
-            "properties": { 
+        {
+            "type": "Feature",
+            "properties": {
                 "Name": "HP_CandidateLocation5",
-                "type_f": "HP", 
-				"Camp": "Nguenyyiel",
-                "id": "hp5" 
-            }, 
-            "geometry": { 
-                "type": "Point", 
-                "coordinates": [ 
+                "type_f": "HP",
+                "Camp": "Nguenyyiel",
+                "id": "hp5"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
                     34.3336150,
                     8.2962120
-                ] 
-            } 
+                ]
+            }
         },
-        { 
-            "type": "Feature", 
-            "properties": { 
+        {
+            "type": "Feature",
+            "properties": {
                 "Name": "HP_CandidateLocation6",
-				"Camp": "Pinyudo",
-                "type_f": "HP", 
-                "id": "hp6" 
-            }, 
-            "geometry": { 
-                "type": "Point", 
-                "coordinates": [ 
+                "Camp": "Pinyudo",
+                "type_f": "HP",
+                "id": "hp6"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
                     34.159662,
                     7.927281
-                ] 
-            } 
+                ]
+            }
         },
-        { 
-            "type": "Feature", 
-            "properties": { 
+        {
+            "type": "Feature",
+            "properties": {
                 "Name": "HP_CandidateLocation7",
-				"Camp": "Tierkidi",
-                "type_f": "HP", 
-                "id": "hp7" 
-            }, 
-            "geometry": { 
-                "type": "Point", 
-                "coordinates": [ 
+                "Camp": "Tierkidi",
+                "type_f": "HP",
+                "id": "hp7"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
                     34.270117,
-                    8.267109	
-                ] 
-            } 
+                    8.267109
+                ]
+            }
         },
-        { 
-            "type": "Feature", 
-            "properties": { 
+        {
+            "type": "Feature",
+            "properties": {
                 "Name": "HP_CandidateLocation8",
-				"Camp": "Pinyudo-II",
-                "type_f": "HP", 
-                "id": "hp8" 
-            }, 
-            "geometry": { 
-                "type": "Point", 
-                "coordinates": [ 
+                "Camp": "Pinyudo-II",
+                "type_f": "HP",
+                "id": "hp8"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
                     34.4286202,
-                    7.7519569	
-                ] 
-            } 
+                    7.7519569
+                ]
+            }
         },
-        { 
-            "type": "Feature", 
-            "properties": { 
+        {
+            "type": "Feature",
+            "properties": {
                 "Name": "HC_CandidateLocation1",
-				"Camp": "Kule",
-                "type_f": "HC", 
-                "id": "hc1" 
-            }, 
-            "geometry": { 
-                "type": "Point", 
-                "coordinates": [ 
+                "Camp": "Kule",
+                "type_f": "HC",
+                "id": "hc1"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
                     34.251172,
-                    8.298461	
-                ] 
-            } 
+                    8.298461
+                ]
+            }
         },
-        { 
-            "type": "Feature", 
-            "properties": { 
+        {
+            "type": "Feature",
+            "properties": {
                 "Name": "HC_CandidateLocation2",
-				"Camp": "Jewi",
-                "type_f": "HC", 
-                "id": "hc2" 
-            }, 
-            "geometry": { 
-                "type": "Point", 
-                "coordinates": [ 
+                "Camp": "Jewi",
+                "type_f": "HC",
+                "id": "hc2"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
                     34.725020,
                     8.142850
-                ] 
-            } 
+                ]
+            }
         },
-        { 
-            "type": "Feature", 
-            "properties": { 
+        {
+            "type": "Feature",
+            "properties": {
                 "Name": "HC_CandidateLocation3",
-				"Camp": "Tierkidi",
-                "type_f": "HC", 
-                "id": "hc3" 
-            }, 
-            "geometry": { 
-                "type": "Point", 
-                "coordinates": [ 
+                "Camp": "Tierkidi",
+                "type_f": "HC",
+                "id": "hc3"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
                     34.272452,
                     8.269051
-                ] 
-            } 
+                ]
+            }
         },
         {
-            "type": "Feature", 
-            "properties": { 
+            "type": "Feature",
+            "properties": {
                 "Name": "HC_CandidateLocation4",
-				"Camp": "Kule",
-                "type_f": "HC", 
-                "id": "hc4" 
-            }, 
-            "geometry": { 
-                "type": "Point", 
-                "coordinates": [ 
+                "Camp": "Pinyudo",
+                "type_f": "HC",
+                "id": "hc4"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
                     34.1428530,
                     7.9183786
-                ] 
-            } 
+                ]
+            }
         },
         {
-            "type": "Feature", 
-            "properties": { 
+            "type": "Feature",
+            "properties": {
                 "Name": "HC_CandidateLocation5",
-				"Camp": "Nguenyyiel",
-                "type_f": "HC", 
-                "id": "hc5" 
-            }, 
-            "geometry": { 
-                "type": "Point", 
-                "coordinates": [ 
+                "Camp": "Nguenyyiel",
+                "type_f": "HC",
+                "id": "hc5"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
                     34.3106989,
                     8.3270403
-                ] 
-            } 
+                ]
+            }
         },
-		{
-            "type": "Feature", 
-            "properties": { 
+        {
+            "type": "Feature",
+            "properties": {
                 "Name": "HC_CandidateLocation6",
-				"Camp": "Pinyudo-II",
-                "type_f": "HC", 
-                "id": "hc6" 
-            }, 
-            "geometry": { 
-                "type": "Point", 
-                "coordinates": [ 
+                "Camp": "Pinyudo-II",
+                "type_f": "HC",
+                "id": "hc6"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
                     34.4275395,
                     7.7487444
-                ] 
-            } 
+                ]
+            }
         }
     ]
 }
-        

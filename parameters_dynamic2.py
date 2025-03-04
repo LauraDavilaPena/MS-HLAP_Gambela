@@ -11,7 +11,7 @@ from scipy.spatial.distance import cdist
 import os
 
 # Select Scenario
-scenario_name = "tierkidi"  # Change this to switch scenarios
+scenario_name = "baseline2"  # Change this to switch scenarios
 params = scenarios[scenario_name]  # Load selected scenario parameters
 
 # Load the GeoJSON file
@@ -211,8 +211,8 @@ distance_df
 
 # Distance matrix
 # distance_matrix = pd.read_excel('distance_matrix_ij.xlsx', index_col=0)
-# distance_matrix = pd.read_excel('distance_matrix_refcamps_meters.xlsx', index_col=0)
-distance_matrix = pd.read_excel('distance_matrix_tierkidi.xlsx', index_col=0)
+distance_matrix = pd.read_excel('distance_matrix_refcamps_meters.xlsx', index_col=0)
+# distance_matrix = pd.read_excel('distance_matrix_tierkidi.xlsx', index_col=0)
 
 distance_matrix
 
