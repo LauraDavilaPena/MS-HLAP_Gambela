@@ -1,4 +1,0 @@
-Facility ID,Facility Type,"Satisfied Demand (f1,f2)","Total Demand (d1,d2)",Efficiency (%),Utilization (Service/Personnel),Max Distance,Demand - Basic (Capacity),Demand - Maternal1 (Capacity),Demand - Maternal2 (Capacity),Personnel - Doctor,Personnel - Nurse,Personnel - Midwife
-j2,hp,"420.0,0.0","840.0,0.0",50.0%,99.4%,5.83,"140.0,0.0 (688)","280.0,0.0 (352)","0.0,0.0 (4)",0,43,1
-j4,hc,"95.0,200.0","120.0,240.0",81.9%,96.7%,5.0,"0.0,0.0 (300)","40.0,80.0 (472)","55.0,120.0 (175)",2,17,42
-j9,hc,"0.0,596.0","0.0,720.0",82.8%,100.0%,5.83,"0.0,0.0 (1152)","0.0,240.0 (616)","0.0,356.0 (356)",48,30,47

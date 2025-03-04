@@ -1,5 +1,0 @@
-Facility,Type,Total Demand,Demand_basic,Demand_maternal1,Demand_maternal2,Personnel_doctor,Personnel_nurse,Personnel_midwife
-j2,hp,22.0 (14.0),16.0 (0.0),6.0 (10.0),0.0 (4.0),0.0,1.0,1.0
-j3,hc,24.0 (65.0),0.0 (46.0),16.0 (16.0),8.0 (3.0),1.0,2.0,2.0
-j5,hc,24.0 (65.0),0.0 (46.0),16.0 (16.0),8.0 (3.0),1.0,2.0,2.0
-j8,hp,44.0 (28.0),32.0 (0.0),12.0 (20.0),0.0 (8.0),0.0,2.0,2.0

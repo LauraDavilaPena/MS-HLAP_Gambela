@@ -1,4 +1,4 @@
-# parameters_dynamic.py
+# parameters_dynamic.pyç
 
 import geopandas as gdp
 import numpy as np
@@ -7,15 +7,20 @@ import itertools
 import sys, trace
 import matplotlib.pyplot as plt
 from scenarios import scenarios  # Import scenario configurations
+from scipy.spatial.distance import cdist
+import os
 
 
 # Select Scenario
-scenario_name = "baseline"  # Change this to switch scenarios
+scenario_name = "baseline2"  # Change this to switch scenarios
 params = scenarios[scenario_name]  # Load selected scenario parameters
 
 
 # Load the GeoJSON file
-location_nodes = gdp.read_file("location_nodes.geojson")
+# location_nodes = gdp.read_file("location_nodes.geojson")
+#location_nodes = gdp.read_file("location_refcamps.geojson")
+location_nodes =  gdp.read_file(params["location_file"])
+
 
 # Add x and y coordinates
 location_nodes.loc[:, 'x'] = location_nodes.geometry.x
@@ -43,9 +48,42 @@ hfs_gdf['label'] = ['j' + str(j + 1) for j in range(len(hfs_gdf))]
 hfs = hfs_gdf['label'].to_numpy()
 hps = hfs_gdf[hfs_gdf['geometry'].isin(hps_gdf['geometry'])]['label'].to_numpy()
 hcs = hfs_gdf[hfs_gdf['geometry'].isin(hcs_gdf['geometry'])]['label'].to_numpy()
+ 
+
+def compute_distance_matrix(demand_points_gdf, hfs_gdf):
+    """
+    Compute the distance matrix between demand points and candidate health facility locations.
+
+    Parameters:
+    - demand_points_gdf: GeoDataFrame containing demand points with 'geometry'.
+    - hfs_gdf: GeoDataFrame containing candidate health facility locations with 'geometry'.
+
+    Returns:
+    - distance_matrix: 2D NumPy array of distances (rows: demand points, columns: health facilities).
+    """
+    # Extract coordinates as NumPy arrays directly from the geometry column
+    demand_coords = np.array(demand_points_gdf.geometry.apply(lambda point: (point.x, point.y)).tolist())
+    hfs_coords = np.array(hfs_gdf.geometry.apply(lambda point: (point.x, point.y)).tolist())
+    
+    # Compute the distance matrix using cdist with Euclidean metric
+    distance_matrix = cdist(demand_coords, hfs_coords, metric='euclidean')
+    
+    # Create a labeled DataFrame
+    distance_df = pd.DataFrame(distance_matrix, index=dps, columns=hfs)
+
+    return distance_df
+
+# Example usage:
+distance_df = compute_distance_matrix(demand_points_gdf, hfs_gdf)
+
+# To save the above matrix into an Excel file to subsequently read
+# distance_df.to_excel('distance_matrix_refcamps.xlsx', sheet_name='DistanceMatrixRefCamps')#, float_format="%.2f")
 
 # Distance matrix
-distance_matrix = pd.read_excel('distance_matrix_ij.xlsx', index_col=0)
+# distance_matrix = pd.read_excel('distance_matrix_ij.xlsx', index_col=0)
+distance_matrix = pd.read_excel('distance_matrix_refcamps.xlsx', index_col=0)
+
+######################################
 
 # Health services and workers
 services = ['basic','maternal1','maternal2']
