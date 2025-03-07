@@ -11,8 +11,17 @@ from scipy.spatial.distance import cdist
 import os
 
 # Select Scenario
-scenario_name = "baseline2"  # Change this to switch scenarios
+# scenario_name = "baseline2"  # Change this to switch scenarios
+# Define a default scenario, but allow overriding dynamically
+
+try:
+    scenario_name
+except NameError:
+    scenario_name = "baseline2"  # Default scenario
+
 params = scenarios[scenario_name]  # Load selected scenario parameters
+
+
 
 # Load the GeoJSON file
 # location_nodes = gdp.read_file("location_nodes.geojson")
@@ -211,8 +220,8 @@ distance_df
 
 # Distance matrix
 # distance_matrix = pd.read_excel('distance_matrix_ij.xlsx', index_col=0)
-distance_matrix = pd.read_excel('distance_matrix_refcamps_meters.xlsx', index_col=0)
-# distance_matrix = pd.read_excel('distance_matrix_tierkidi.xlsx', index_col=0)
+# distance_matrix = pd.read_excel('distance_matrix_refcamps_meters.xlsx', index_col=0)
+distance_matrix = pd.read_excel(params["distance_matrix"], index_col=0)
 
 distance_matrix
 
@@ -240,6 +249,12 @@ service_time = params["service_time"]
 lb_workers_df = pd.DataFrame(params["lb_workers"], index=health_workers)
 lb_workers = {(health_workers[p], levels[l]): lb_workers_df.iloc[p, l] 
       for p, l in itertools.product(range(len(health_workers)), range(len(levels)))}
+
+# Upper bound workers per HF type
+ub_workers_df = pd.DataFrame(params["ub_workers"], index=health_workers)
+ub_workers = {(health_workers[p], levels[l]): ub_workers_df.iloc[p, l] 
+      for p, l in itertools.product(range(len(health_workers)), range(len(levels)))}
+
 
 # Where can each service be provided?
 services_at_HFs_df = pd.DataFrame(params["services_at_HFs"], index=services)
