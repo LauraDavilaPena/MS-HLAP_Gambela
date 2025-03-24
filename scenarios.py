@@ -329,4 +329,136 @@ scenarios = {
             [0, 1, 1],  # midwife
         ],
     },
+        "nguenyyiel_baseline": {
+        "location_file": "individual_refugee_camps/nguenyyiel_baseline.geojson",
+        "distance_matrix": "individual_refugee_camps/distance_matrix_nguenyyiel_baseline.xlsx",
+        "HFs_to_locate": [3, 1],
+        "t1max": 500, # meters (based on avg distance from demand points to HPs candidate locations)
+        "t2max": 3500, # meters (based on avg distance from demand points to HCs candidate locations)
+        "workers_to_allocate": [2, 18, 18],  # doctor, nurse, midwife 
+        "total_population": 700,
+        "demand_rate_opening_hours": [0.01428571429, 0.00428571428, 0.00142857142],  # basic, maternal1, maternal2
+        "demand_rate_closing_hours": [0.00428571428, 0.00285714285, 0.00142857142],
+        "working_hours": [7, 8, 8],
+        "service_time": [0.5, 1, 2],
+        "lb_workers": [
+            [0, 1],  # doctor
+            [1, 2],  # nurse
+            [1, 2],  # midwife
+        ],
+        "ub_workers": [
+            [1, 2],  # doctor
+            [6, 8],  # nurse
+            [6, 8],  # midwife
+        ],
+        "services_at_HFs": [
+            [1, 0],  # basic
+            [1, 1],  # maternal1
+            [0, 1],  # maternal2
+        ],
+        "services_per_worker": [
+            [1, 0, 1],  # doctor
+            [1, 1, 0],  # nurse
+            [0, 1, 1],  # midwife
+        ],
+    },
+        "kule_baseline": {
+        "location_file": "individual_refugee_camps/kule_baseline.geojson",
+        "distance_matrix": "individual_refugee_camps/distance_matrix_kule_baseline.xlsx",
+        "HFs_to_locate": [2, 1],
+        "t1max": 500, # meters (based on avg distance from demand points to HPs candidate locations)
+        "t2max": 3500, # meters (based on avg distance from demand points to HCs candidate locations)
+        "workers_to_allocate": [2, 18, 18],  # doctor, nurse, midwife 
+        "total_population": 700,
+        "demand_rate_opening_hours": [0.01428571429, 0.00428571428, 0.00142857142],  # basic, maternal1, maternal2
+        "demand_rate_closing_hours": [0.00428571428, 0.00285714285, 0.00142857142],
+        "working_hours": [7, 8, 8],
+        "service_time": [0.5, 1, 2],
+        "lb_workers": [
+            [0, 1],  # doctor
+            [1, 2],  # nurse
+            [1, 2],  # midwife
+        ],
+        "ub_workers": [
+            [1, 2],  # doctor
+            [6, 8],  # nurse
+            [6, 8],  # midwife
+        ],
+        "services_at_HFs": [
+            [1, 0],  # basic
+            [1, 1],  # maternal1
+            [0, 1],  # maternal2
+        ],
+        "services_per_worker": [
+            [1, 0, 1],  # doctor
+            [1, 1, 0],  # nurse
+            [0, 1, 1],  # midwife
+        ],
+    },
+        "jewi_baseline": {
+        "location_file": "individual_refugee_camps/jewi_baseline.geojson",
+        "distance_matrix": "individual_refugee_camps/distance_matrix_jewi_baseline.xlsx",
+        "HFs_to_locate": [2, 1],
+        "t1max": 500, # meters (based on avg distance from demand points to HPs candidate locations)
+        "t2max": 3500, # meters (based on avg distance from demand points to HCs candidate locations)
+        "workers_to_allocate": [2, 18, 18],  # doctor, nurse, midwife 
+        "total_population": 700,
+        "demand_rate_opening_hours": [0.01428571429, 0.00428571428, 0.00142857142],  # basic, maternal1, maternal2
+        "demand_rate_closing_hours": [0.00428571428, 0.00285714285, 0.00142857142],
+        "working_hours": [7, 8, 8],
+        "service_time": [0.5, 1, 2],
+        "lb_workers": [
+            [0, 1],  # doctor
+            [1, 2],  # nurse
+            [1, 2],  # midwife
+        ],
+        "ub_workers": [
+            [1, 2],  # doctor
+            [6, 8],  # nurse
+            [6, 8],  # midwife
+        ],
+        "services_at_HFs": [
+            [1, 0],  # basic
+            [1, 1],  # maternal1
+            [0, 1],  # maternal2
+        ],
+        "services_per_worker": [
+            [1, 0, 1],  # doctor
+            [1, 1, 0],  # nurse
+            [0, 1, 1],  # midwife
+        ],
+    },
+        "pugnido_baseline": {
+        "location_file": "individual_refugee_camps/pugnido_baseline.geojson",
+        "distance_matrix": "individual_refugee_camps/distance_matrix_pugnido_baseline.xlsx",
+        "HFs_to_locate": [2, 1],
+        "t1max": 500, # meters (based on avg distance from demand points to HPs candidate locations)
+        "t2max": 3500, # meters (based on avg distance from demand points to HCs candidate locations)
+        "workers_to_allocate": [2, 18, 18],  # doctor, nurse, midwife 
+        "total_population": 700,
+        "demand_rate_opening_hours": [0.01428571429, 0.00428571428, 0.00142857142],  # basic, maternal1, maternal2
+        "demand_rate_closing_hours": [0.00428571428, 0.00285714285, 0.00142857142],
+        "working_hours": [7, 8, 8],
+        "service_time": [0.5, 1, 2],
+        "lb_workers": [
+            [0, 1],  # doctor
+            [1, 2],  # nurse
+            [1, 2],  # midwife
+        ],
+        "ub_workers": [
+            [1, 2],  # doctor
+            [6, 8],  # nurse
+            [6, 8],  # midwife
+        ],
+        "services_at_HFs": [
+            [1, 0],  # basic
+            [1, 1],  # maternal1
+            [0, 1],  # maternal2
+        ],
+        "services_per_worker": [
+            [1, 0, 1],  # doctor
+            [1, 1, 0],  # nurse
+            [0, 1, 1],  # midwife
+        ],
+    },
 }

@@ -371,6 +371,192 @@ def plot_solution_with_map_zoom(model, demand_points_gdf, hfs_gdf, zoom_factor =
 
 
 
+# Plot the solution with a map background and covering radius from each of the facilities that depend on the model solution
+
+def plot_solution_with_model_dependent_covering_radius(model, demand_points_gdf, hfs_gdf, plot_first_cov_radius, plot_second_cov_radius, plot_color_first_assignment, plot_color_second_assignment):
+    """
+    Visualize the solution of the Pyomo model on a real-world map using Contextily.
+    Now, cov_radius for each open HP and HC is the distance to the furthest allocated demand point.
+    
+    Parameters:
+        model: Solved Pyomo model
+        demand_points_gdf: GeoDataFrame with demand points (geometry and labels)
+        hfs_gdf: GeoDataFrame with potential locations for health posts (HP) and health centres (HC) (geometry and labels)
+    """
+
+    # Convert to Web Mercator projection for map compatibility
+    demand_points_gdf = demand_points_gdf.to_crs(epsg=3857)
+    hfs_gdf = hfs_gdf.to_crs(epsg=3857)
+
+    fig, ax = plt.subplots(figsize=(10, 10))
+
+    # Plot demand points (without names)
+    #demand_points_gdf.plot(ax=ax, color='red', markersize=50)
+
+    # Plot demand points colored by their assigned facility
+    for i in model.I:
+        first_assignment = None
+        second_assignment = None
+        
+        for j in model.J:
+            if model.x1[i, j].value > 0:
+                first_assignment = j
+            if model.x2[i, j].value > 0:
+                second_assignment = j
+
+        demand_coords = demand_points_gdf.loc[demand_points_gdf['label'] == i, 'geometry'].values[0]
+        
+        # Determine color based on first or second assignment
+        plot_color = None
+        
+        if plot_color_first_assignment and first_assignment is not None:
+            assigned_facility_type = next(l for l in model.L if model.y[first_assignment, l].value > 0)
+            plot_color = 'lightblue' if assigned_facility_type == 'hp' else 'orange'
+        
+        elif not plot_color_first_assignment and plot_color_second_assignment and second_assignment is not None:
+            assigned_facility_type = next(l for l in model.L if model.y[second_assignment, l].value > 0)
+            plot_color = 'lightgreen' if assigned_facility_type == 'hc' else None 
+
+         # Plot only if a color is assigned
+        if plot_color:
+            ax.scatter(demand_coords.x, demand_coords.y, color=plot_color, s=50, edgecolor='black')
+
+    # Plot open HPs (blue triangles) and HCs (black squares) without labels
+    for j in model.J:
+        for l in model.L:
+            if model.y[j, l].value > 0:  # Only plot open facilities
+                hf_coords = hfs_gdf.loc[hfs_gdf['label'] == j, 'geometry'].values[0]
+                
+                # Get the demand points assigned to the facility (use model variables to determine assignments)
+                first_assigned_demand_points = [i for i in model.I if model.x1[i, j].value > 0]
+                second_assigned_demand_points = [i for i in model.I if model.x2[i, j].value > 0]
+
+                # Compute the distance to the furthest allocated demand point
+                first_max_distance = 0
+                second_max_distance = 0
+                first_furthest_demand = None
+                second_furthest_demand = None
+                for i in first_assigned_demand_points:
+                    demand_coords = demand_points_gdf.loc[demand_points_gdf['label'] == i, 'geometry'].values[0]
+                    distance = hf_coords.distance(demand_coords)
+                    if distance > first_max_distance:
+                        first_max_distance = distance
+                        first_furthest_demand = demand_coords
+
+                for i in second_assigned_demand_points:
+                    demand_coords = demand_points_gdf.loc[demand_points_gdf['label'] == i, 'geometry'].values[0]
+                    distance = hf_coords.distance(demand_coords)
+                    if distance > second_max_distance:
+                        second_max_distance = distance
+                        second_furthest_demand = demand_coords
+
+                # Now max_distance is the cov_radius for this facility
+                first_cov_radius = first_max_distance
+                second_cov_radius = second_max_distance
+
+                # Plot the covering radius as a circle around the facility
+                if l == 'hp' and plot_first_cov_radius:  # Plot a circle around HP
+                    circle = Circle(
+                        (hf_coords.x, hf_coords.y), radius=first_cov_radius, color='lightblue', alpha=0.6
+                    )
+                    ax.add_patch(circle)
+
+                elif l == 'hc':
+                    # Plot covering radius for first assignment (x1) if demand points are assigned
+                    if plot_first_cov_radius:
+                        for i in first_assigned_demand_points:
+                            if model.x1[i, j].value > 0:  # First assignment for HC
+                                circle = Circle(
+                                    (hf_coords.x, hf_coords.y), radius=first_cov_radius, color='orange', alpha=0.2
+                                )
+                                ax.add_patch(circle)
+                                break  # First assignment is plotted once
+
+                    # Plot covering radius for second assignment (x2) if demand points are assigned
+                    if plot_second_cov_radius:
+                        for i in second_assigned_demand_points:
+                            if model.x2[i, j].value > 0:  # Second assignment for HC
+                                circle = Circle(
+                                    (hf_coords.x, hf_coords.y), radius=second_cov_radius, color='lightgreen', alpha=0.2
+                                )
+                                ax.add_patch(circle)
+                                break  # Second assignment is plotted once
+
+                # Plot the actual facility location (marker for HP or HC)
+                if l == 'hp':
+                    ax.plot(hf_coords.x, hf_coords.y, marker='^', color='blue', markersize=8)
+                elif l == 'hc':
+                    ax.plot(hf_coords.x, hf_coords.y, marker='s', color='black', markersize=8)
+                                # Add the line to the furthest demand point
+
+
+                if first_furthest_demand is not None and plot_first_cov_radius:
+                    ax.plot([hf_coords.x, first_furthest_demand.x], [hf_coords.y, first_furthest_demand.y], color='blue', linestyle='-', linewidth=0.5)
+                    ax.text((hf_coords.x + first_furthest_demand.x) / 2, (hf_coords.y + first_furthest_demand.y) / 2,
+                            f'{first_max_distance:.2f} m', color='blue', fontsize=10, ha='center')
+
+                if second_furthest_demand is not None and plot_second_cov_radius:
+                    ax.plot([hf_coords.x, second_furthest_demand.x], [hf_coords.y, second_furthest_demand.y], color='green', linestyle='-', linewidth=1)
+                    ax.text((hf_coords.x + second_furthest_demand.x) / 2, (hf_coords.y + second_furthest_demand.y) / 2,
+                            f'{second_max_distance:.2f} m', color='green', fontsize=10, ha='center')
+
+
+    # Add a basemap
+    ctx.add_basemap(ax, source=ctx.providers.OpenStreetMap.Mapnik)
+
+    # Remove the axes (box) for a cleaner look
+    ax.set_axis_off()
+
+    plt.title("Open facilities and covering radius based on assigned demand points")
+    
+    # Compute the bounding box of demand points and facilities
+    all_x = list(demand_points_gdf.geometry.x) + list(hfs_gdf.geometry.x)
+    all_y = list(demand_points_gdf.geometry.y) + list(hfs_gdf.geometry.y)
+
+    # Determine the largest covering radius among all facilities
+    max_covering_radius = 0
+
+    for j in model.J:
+        for l in model.L:
+            if model.y[j, l].value > 0:  # Only consider open facilities
+                hf_coords = hfs_gdf.loc[hfs_gdf['label'] == j, 'geometry'].values[0]
+
+                # Compute the maximum distance to assigned demand points
+                first_max_distance = max(
+                    (hf_coords.distance(demand_points_gdf.loc[demand_points_gdf['label'] == i, 'geometry'].values[0])
+                    for i in model.I if model.x1[i, j].value > 0), default=0
+                )
+                second_max_distance = max(
+                    (hf_coords.distance(demand_points_gdf.loc[demand_points_gdf['label'] == i, 'geometry'].values[0])
+                    for i in model.I if model.x2[i, j].value > 0), default=0
+                )
+
+                # Update max covering radius
+                max_covering_radius = max(max_covering_radius, first_max_distance, second_max_distance)
+
+    # Set fixed margins considering the largest covering radius
+    x_min, x_max = min(all_x), max(all_x)
+    y_min, y_max = min(all_y), max(all_y)
+
+    # Compute center and max span
+    x_center, y_center = (x_min + x_max) / 2, (y_min + y_max) / 2
+    
+    # Set zoom factor: reduce the impact of max_covering_radius
+    zoom_factor = 0.35  # Adjust this value (lower = more zoomed in)
+    max_span = max((x_max - x_min), (y_max - y_min)) / 2 + zoom_factor * max_covering_radius
+
+
+    # Set limits to maintain a square aspect ratio
+    ax.set_xlim(x_center - max_span, x_center + max_span)
+    ax.set_ylim(y_center - max_span, y_center + max_span)
+
+    # Ensure square aspect ratio
+    ax.set_aspect("equal")
+
+    plt.show()
+
+
+
 # Plot solution; this is intended for the first (toy) example of the grid. Not if we have a real-world coordinate system.
 
 def plot_solution_v1(model, demand_points_gdf, hfs_gdf, show_first_assignment=False, show_second_assignment=False):
@@ -755,3 +941,50 @@ def display_selected_variables(model):
 
     if model.deltamax.value is not None and model.deltamax.value > 0:
         print(f"deltamax = {model.deltamax.value}") 
+
+
+def display_selected_variables_CAC(model):
+    """
+    Display only the selected variables from the Pyomo model.
+    """
+    print("Selected variables (y_jl = 1, x1_ij = 1, x2_ij = 1, f1_ijs > 0, f2_ijs > 0, w_jp > 0, taumax > 0, deltamax > 0):")
+
+    for j in model.J:
+            for l in model.L:
+                if model.y[j, l].value is not None and model.y[j, l].value > 0:
+                    print(f"y[{j},{l}] = {model.y[j, l].value}")
+
+    for i in model.I:
+            for j in model.J:
+                    if model.x1[i, j].value is not None and model.x1[i, j].value > 0:
+                        print(f"x1[{i},{j}] = {model.x1[i, j].value}") 
+
+    for i in model.I:
+            for j in model.J:
+                    if model.x2[i, j].value is not None and model.x2[i, j].value > 0:
+                        print(f"x2[{i},{j}] = {model.x2[i, j].value} Demand Location is in camp ") 
+
+    for i in model.I:
+            for j in model.J:
+                for s in model.S:
+                    if model.f1[i, j, s].value is not None and model.f1[i, j, s].value > 0:
+                        print(f"f1[{i},{j},{s}] = {model.f1[i, j, s].value}") 
+
+    for i in model.I:
+            for j in model.J:
+                for s in model.S:
+                    if model.f2[i, j, s].value is not None and model.f2[i, j, s].value > 0:
+                        print(f"f2[{i},{j},{s}] = {model.f2[i, j, s].value}") 
+
+    for j in model.J:
+            for p in model.P:
+                    if model.w[j, p].value is not None and model.w[j, p].value > 0:
+                        print(f"w[{j},{p}] = {model.w[j, p].value}") 
+                    
+    for c in model.C:
+        if model.tau1max[c].value is not None and model.tau1max[c].value > 0:
+            print(f"tau1max[{c}] = {model.tau1max[c].value}")
+
+    for c in model.C:
+        if model.tau2max[c].value is not None and model.tau2max[c].value > 0:
+            print(f"tau2max[{c}] = {model.tau2max[c].value}")
