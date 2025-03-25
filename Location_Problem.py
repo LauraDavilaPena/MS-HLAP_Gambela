@@ -36,7 +36,7 @@ class Location_Problem():
             reverse=True
         )
         for j in hc_candidates:
-            if len(open_hcs) >= self.max_hcs:
+            if len(open_hcs) >= self.model_data.max_hcs:
                 break
             open_hcs.append(j)
 
@@ -47,7 +47,7 @@ class Location_Problem():
             reverse=True
         )
         for j in hp_candidates:
-            if len(open_hps) >= self.max_hps:
+            if len(open_hps) >= self.model_data.max_hps:
                 break
             val = X[self.J.index(j)]
             if 1 <= val < 2:
