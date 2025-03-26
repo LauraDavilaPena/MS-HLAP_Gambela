@@ -5,10 +5,12 @@ class Location_Problem():
     def __init__(self, model_data):
         self.model_data = model_data
         self.n = len(model_data['J'])
-        self.HPs = set(model_data['HPs'])
-        self.HCs = set(model_data['HCs'])
+        self.J_HP = set(model_data['J_HP']) 
+        self.J_HC = set(model_data['J_HC'])  
         self.J = model_data['J']
-
+        self.J_c = model_data['J_c'] 
+        self.max_hps = model_data['n_HF']['hp'] 
+        self.max_hcs = model_data['n_HF']['hc'] 
 
     def get_bounds(self):
         return (np.full(self.n,0), np.full(self.n,3))
@@ -22,35 +24,39 @@ class Location_Problem():
         chosen_hcs = set()
 
         # 1. Ensure at least one HC per camp (highest X value among eligible HCs)
-        for camp, camp_locs in self.model.J_c.items():
-            hc_locs = [j for j in camp_locs if j in self.HCs]
+        for camp, camp_locs in self.J_c.items():  
+            hc_locs = [j for j in camp_locs if j in self.J_HC] 
             if hc_locs:
-                best_j = max(hc_locs, key=lambda j: X[self.J.index(j)])
+                best_j = max(hc_locs, key=lambda j: X[np.where(self.J==j)[0][0]]) 
+                                                                         
                 open_hcs.append(best_j)
                 chosen_hcs.add(best_j)
 
         # 2. Select other HCs (if under max limit)
         hc_candidates = sorted(
-            [j for j in self.HCs if j not in chosen_hcs],
-            key=lambda j: X[self.J.index(j)],
+            [j for j in self.J_HC if j not in chosen_hcs],
+            key=lambda j: X[np.where(self.J==j)[0][0]],  
             reverse=True
         )
         for j in hc_candidates:
-            if len(open_hcs) >= self.model_data.max_hcs:
+            if len(open_hcs) >= self.max_hcs: 
+                                                         
                 break
-            open_hcs.append(j)
+            val = X[np.where(self.J==j)[0][0]]
+            if 2 <= val <= 3:
+                open_hcs.append(j)
 
-        # 3. Select HPs based on value in [1,2)
+        # 3. Select HPs based on value in [1,2) 
         hp_candidates = sorted(
-            [j for j in self.HPs],
-            key=lambda j: X[self.J.index(j)],
+            [j for j in self.J_HP], 
+            key=lambda j: X[np.where(self.J==j)[0][0]], 
             reverse=True
         )
         for j in hp_candidates:
-            if len(open_hps) >= self.model_data.max_hps:
+            if len(open_hps) >= self.max_hps: 
                 break
-            val = X[self.J.index(j)]
-            if 1 <= val < 2:
+            val = X[np.where(self.J==j)[0][0]]
+            if 1 <= val < 2: 
                 open_hps.append(j)
 
         return open_hps, open_hcs

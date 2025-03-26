@@ -1,14 +1,23 @@
-import Location_Problem as problem
+import Location_Problem_ldp as problem
 import pygmo as pg
 import time
 
-    
+# Laura: I added this:
+import importlib
+import parameters
+from parameters import *
+# Change scenario dynamically
+scenario_name = "pugnido_baseline"  
+parameters.scenario_name = scenario_name  
+importlib.reload(parameters)  
+##################################################################
+
 # Record the start time
 start_time = time.time()
 
-pop_size =200
-gen = 200
-model_data = ...
+pop_size =20
+gen = 10
+model_data = parameters.model_data # Laura: I added this 
 p = pg.problem(problem.Location_Problem(model_data))
 pop = pg.population(prob=p, size=pop_size, seed=12314876)
 algo = pg.algorithm(pg.nsga2(gen=gen))
