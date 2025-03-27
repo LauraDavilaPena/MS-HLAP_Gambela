@@ -1,4 +1,4 @@
-import Location_Problem_ldp as problem
+import Location_Problem as problem
 import pygmo as pg
 import time
 
@@ -31,7 +31,7 @@ elapsed_time = end_time - start_time
 # print(f"Elapsed Time: {elapsed_time} seconds")
 
 # Save the best solution
-Best_soluton = pop.get_x()[pop.best_idx()]
+Best_soluton = pop.get_x()[0]
 original_p = p.extract(problem.Location_Problem)
 KPIs = original_p.fitness(Best_soluton)
 open_hps, open_hcs = original_p.decode_facilities(Best_soluton)
