@@ -16,7 +16,7 @@ class Location_Problem():
         return (np.full(self.n,0), np.full(self.n,3))
     
     def get_nobj(self):
-        return 4
+        return 3
     
     def decode_facilities(self, X):
         open_hps = []
@@ -103,10 +103,10 @@ class Location_Problem():
             for i in I_c:  
 
                 # First assignment: Closest HP or HC in the same camp
-                open_hps_c = np.array([j for j in open_hps if j in J_c], dtype=object)  # Open HPs in camp c as an array
+                open_hfs_c = np.array([j for j in open_facilities if j in J_c], dtype=object)  # Open HPs in camp c as an array
 
-                if open_hps_c.size > 0:  # If there are open HCs in this camp
-                    closest_first = open_hps_c[np.argmin([model_data['t'].loc[i, j] for j in open_hps_c])]
+                if open_hfs_c.size > 0:  # If there are open HCs in this camp
+                    closest_first = open_hfs_c[np.argmin([model_data['t'].loc[i, j] for j in open_hfs_c])]
                     first_assignment[i] = closest_first
                     max_dist_first_per_camp[c] = max(max_dist_first_per_camp[c], model_data['t'].loc[i, closest_first])
                 else:
@@ -136,10 +136,8 @@ class Location_Problem():
 
         # Compute results
         satisfied_demand = pyo.value(m.obj)
-        total_demand = sum(m.d1[i, s] + m.d2[i, s] for i in m.I for s in m.S)
-        lost_demand = total_demand - satisfied_demand
 
-        return satisfied_demand, lost_demand, sum_max_dist_first_assignment, sum_max_dist_second_assignment
+        return [-satisfied_demand, sum_max_dist_first_assignment, sum_max_dist_second_assignment]
     
     def create_workforce_model(self, open_hps, open_hcs, open_facilities, first_assignment, second_assignment):
         model_data = self.model_data

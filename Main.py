@@ -31,7 +31,9 @@ elapsed_time = end_time - start_time
 # print(f"Elapsed Time: {elapsed_time} seconds")
 
 # Save the best solution
-Best_soluton = pop.get_x()[0]
+Best_soluton = pop.get_x()[12] 
 original_p = p.extract(problem.Location_Problem)
 KPIs = original_p.fitness(Best_soluton)
 open_hps, open_hcs = original_p.decode_facilities(Best_soluton)
+
+print(open_hps,open_hcs,KPIs)
