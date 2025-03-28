@@ -85,6 +85,8 @@ def plot_solution(model, demand_points_gdf, hfs_gdf):
     plt.title("Model Solution: Demand and Facility Assignments")
     plt.show()
 
+    return fig
+
 
 
 # Plot the solution with a map background (only if our demand points and facilities have real-world coordinates; otherwise, use the code above)
@@ -182,6 +184,8 @@ def plot_solution_with_map(model, demand_points_gdf, hfs_gdf, show_arrows = Fals
 
     plt.show()
 
+    return fig
+
 
 
 # Plot the solution with a map background and a circle of radius cov_radius around HPs
@@ -235,6 +239,8 @@ def plot_solution_with_covering_radius(model, demand_points_gdf, hfs_gdf, cov_ra
     #plt.savefig("terkidi_add_1HC_add_1doctor_change_t1max_add_4nurses4midwives_upper_bounds_OSM_solution.png", format='png', dpi=300, bbox_inches='tight')
 
     plt.show()
+
+    return fig
 
 
 
@@ -369,6 +375,7 @@ def plot_solution_with_map_zoom(model, demand_points_gdf, hfs_gdf, zoom_factor =
     plt.title(f"Model Solution: Demand & Facility Assignments - Zoomed on {open_facility_label if open_facility_label else 'All Open Facilities'}")
     plt.show()
 
+    return fig
 
 
 # Plot the solution with a map background and covering radius from each of the facilities that depend on the model solution
@@ -555,6 +562,7 @@ def plot_solution_with_model_dependent_covering_radius(model, demand_points_gdf,
 
     plt.show()
 
+    return fig
 
 
 # Plot solution; this is intended for the first (toy) example of the grid. Not if we have a real-world coordinate system.
@@ -667,6 +675,7 @@ def plot_solution_v1(model, demand_points_gdf, hfs_gdf, show_first_assignment=Fa
 
     plt.show()
 
+    return fig
 
 
 # Create summary table

@@ -11,7 +11,7 @@ from scipy.spatial.distance import cdist
 try:
     scenario_name
 except NameError:
-    scenario_name = "baseline2"  # Default scenario
+    scenario_name = "nguenyyiel_terkidi_baseline"  # Default scenario
 
 params = scenarios[scenario_name]  # Load selected scenario parameters
 
